@@ -1,0 +1,15 @@
+# Quiet Contrast — GitHub Pages config
+# Using plain static HTML — Jekyll processing is off.
+# GitHub Pages will serve index.html directly.
+
+title: "Quiet Contrast"
+description: "Graphic Design Studio — Mission Viejo, CA"
+url: "https://quietcontrast.github.io"   # ← update to your actual GitHub Pages URL
+
+# Tell Jekyll to pass everything through untouched
+include:
+  - assets
+
+exclude:
+  - README.md
+  - "*.sh"
