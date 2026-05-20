@@ -5,19 +5,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
 <title>Quiet Contrast — Graphic Design Studio</title>
 
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23f2b8c6'/%3E%3Ctext x='16' y='23' font-family='Arial Black,sans-serif' font-size='14' font-weight='900' text-anchor='middle' fill='%230a0a0a'%3EQC%3C/text%3E%3C/svg%3E"/>
-<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' fill='%23f2b8c6'/%3E%3Ctext x='90' y='128' font-family='Arial Black,sans-serif' font-size='96' font-weight='900' text-anchor='middle' fill='%230a0a0a'%3EQC%3C/text%3E%3C/svg%3E"/>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%238BAF9F'/%3E%3Ctext x='16' y='23' font-family='Arial Black,sans-serif' font-size='14' font-weight='900' text-anchor='middle' fill='%230a0a0a'%3EQC%3C/text%3E%3C/svg%3E"/>
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' fill='%238BAF9F'/%3E%3Ctext x='90' y='128' font-family='Arial Black,sans-serif' font-size='96' font-weight='900' text-anchor='middle' fill='%230a0a0a'%3EQC%3C/text%3E%3C/svg%3E"/>
 <meta name="apple-mobile-web-app-title" content="QC"/>
-<meta name="theme-color" content="#f2b8c6"/>
+<meta name="theme-color" content="#8BAF9F"/>
 
-<!-- CRITICAL: Must run before any rendering to prevent Safari scroll-restore jump -->
+<!-- CRITICAL: Force scroll top in every possible Safari entry point -->
 <script>
-// Disable browser scroll restoration so Safari doesn't jump to saved position
-if ('scrollRestoration' in history) {
-  history.scrollRestoration = 'manual';
-}
-// Force top immediately — runs synchronously before paint
-window.scrollTo(0, 0);
+  // 1. Kill scroll restoration before anything else
+  if (history.scrollRestoration) history.scrollRestoration = 'manual';
+  // 2. Immediate synchronous scroll
+  if (typeof window !== 'undefined') { try { window.scrollTo(0,0); } catch(e){} }
 </script>
 
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
@@ -30,8 +28,8 @@ window.scrollTo(0, 0);
 :root{
   --cream:#f0ebe0;
   --cream2:#e8e2d5;
-  --pink:#f2b8c6;
-  --pink-dark:#e5a0b4;
+  --pink:#8BAF9F;
+  --pink-dark:#6d9585;
   --black:#0a0a0a;
   --dark:#1a1a18;
   --gray:#666;
@@ -40,7 +38,7 @@ window.scrollTo(0, 0);
 }
 
 /* NO scroll-behavior on html — prevents Safari jump-to-bottom on load */
-html{background:var(--cream)}
+html{background:var(--cream);scroll-behavior:auto !important}
 
 body{
   font-family:var(--body);
@@ -634,6 +632,9 @@ footer{background:var(--cream);border-top:none}
 </head>
 <body>
 
+<!-- force top anchor -->
+<div id="page-top" aria-hidden="true" style="position:absolute;top:0;left:0;height:0;width:0;overflow:hidden"></div>
+
 <!-- ── FLOATING NAV ── -->
 <nav class="site-nav" id="siteNav">
   <a href="#top" class="nav-brand">Quiet Contrast</a>
@@ -1080,16 +1081,34 @@ document.querySelectorAll('a[href^="#"]').forEach(function(a) {
   });
 });
 
-// ── FINAL SCROLL LOCK: force top on every load/reload ──
-// Runs after all JS — catches Safari's late scroll restoration
-window.scrollTo(0, 0);
-window.addEventListener('load', function() {
-  window.scrollTo(0, 0);
-});
-// Belt-and-suspenders: also catch pageshow (Safari back/forward cache)
+// ── COMPREHENSIVE SCROLL TOP FIX ──
+// Covers: initial load, Safari bfcache, iOS Safari, and font-load reflow
+function forceTop() { window.scrollTo(0, 0); }
+
+// Immediate
+forceTop();
+
+// After DOM ready
+document.addEventListener('DOMContentLoaded', forceTop);
+
+// After full load (images, fonts)
+window.addEventListener('load', forceTop);
+
+// After fonts load (Google Fonts can cause reflow + scroll jump)
+if (document.fonts && document.fonts.ready) {
+  document.fonts.ready.then(forceTop);
+}
+
+// Safari bfcache (back/forward navigation restores scroll)
 window.addEventListener('pageshow', function(e) {
-  window.scrollTo(0, 0);
+  // e.persisted = true means loaded from bfcache
+  forceTop();
 });
+
+// Catch any delayed scroll restoration (some Safari versions do this at 100-300ms)
+setTimeout(forceTop, 50);
+setTimeout(forceTop, 150);
+setTimeout(forceTop, 300);
 </script>
 </body>
 </html>
