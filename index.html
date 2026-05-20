@@ -2,1113 +2,1313 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=5"/>
 <title>Quiet Contrast — Graphic Design Studio</title>
 
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%238BAF9F'/%3E%3Ctext x='16' y='23' font-family='Arial Black,sans-serif' font-size='14' font-weight='900' text-anchor='middle' fill='%230a0a0a'%3EQC%3C/text%3E%3C/svg%3E"/>
-<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' fill='%238BAF9F'/%3E%3Ctext x='90' y='128' font-family='Arial Black,sans-serif' font-size='96' font-weight='900' text-anchor='middle' fill='%230a0a0a'%3EQC%3C/text%3E%3C/svg%3E"/>
-<meta name="apple-mobile-web-app-title" content="QC"/>
-<meta name="theme-color" content="#8BAF9F"/>
-
-<!-- CRITICAL: Force scroll top in every possible Safari entry point -->
+<!-- Scroll fix -->
 <script>
-  // 1. Kill scroll restoration before anything else
-  if (history.scrollRestoration) history.scrollRestoration = 'manual';
-  // 2. Immediate synchronous scroll
-  if (typeof window !== 'undefined') { try { window.scrollTo(0,0); } catch(e){} }
+if(history.scrollRestoration)history.scrollRestoration='manual';
+try{window.scrollTo(0,0);}catch(e){}
 </script>
+
+<!-- QC favicon -->
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230a0a0a'/%3E%3Ctext x='16' y='22' font-family='Arial Black' font-size='13' font-weight='900' text-anchor='middle' fill='%23c4f135'%3EQC%3C/text%3E%3C/svg%3E"/>
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' fill='%230a0a0a'/%3E%3Ctext x='90' y='126' font-family='Arial Black' font-size='80' font-weight='900' text-anchor='middle' fill='%23c4f135'%3EQC%3C/text%3E%3C/svg%3E"/>
+<meta name="apple-mobile-web-app-title" content="QC"/>
+<meta name="theme-color" content="#0a0a0a"/>
 
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,700;0,800;0,900;1,700;1,800;1,900&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;400;600;700;800;900&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet"/>
 
 <style>
-/* ── RESET ── */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --cream:#f0ebe0;
-  --cream2:#e8e2d5;
-  --pink:#8BAF9F;
-  --pink-dark:#6d9585;
-  --black:#0a0a0a;
-  --dark:#1a1a18;
-  --gray:#666;
-  --display:'Barlow Condensed',sans-serif;
-  --body:'Barlow',sans-serif;
-}
+html{background:#0a0a0a;scroll-behavior:auto}
 
-/* NO scroll-behavior on html — prevents Safari jump-to-bottom on load */
-html{background:var(--cream);scroll-behavior:auto !important}
+:root{
+  --black:    #0a0a0a;
+  --black2:   #111111;
+  --black3:   #181818;
+  --lime:     #c4f135;
+  --lime2:    #d8ff58;
+  --white:    #ffffff;
+  --off:      #f0f0f0;
+  --muted:    rgba(255,255,255,0.45);
+  --dim:      rgba(255,255,255,0.18);
+  --border:   rgba(255,255,255,0.1);
+  --display:  'Unbounded', sans-serif;
+  --body:     'DM Sans', sans-serif;
+}
 
 body{
   font-family:var(--body);
-  background:var(--cream);
-  color:var(--black);
+  background:var(--black);
+  color:var(--white);
   overflow-x:hidden;
   -webkit-font-smoothing:antialiased;
-  /* prevent momentum scroll bounce causing jump */
   overscroll-behavior:none;
+  cursor:none;
 }
-
 a{text-decoration:none;color:inherit}
-button{cursor:pointer;font-family:inherit;border:none;background:none}
+button{cursor:none;font-family:inherit;border:none;background:none}
+
+/* ── CURSOR ── */
+#qc-cursor{
+  position:fixed;width:10px;height:10px;
+  background:var(--lime);border-radius:50%;
+  pointer-events:none;z-index:9999;
+  transform:translate(-50%,-50%);
+  transition:width .3s,height .3s,background .3s;
+  mix-blend-mode:difference;
+}
+#qc-cursor-ring{
+  position:fixed;width:36px;height:36px;
+  border:1.5px solid rgba(196,241,53,.4);
+  border-radius:50%;pointer-events:none;z-index:9998;
+  transform:translate(-50%,-50%);
+  transition:transform .12s linear;
+}
+body:has(a:hover) #qc-cursor,
+body:has(button:hover) #qc-cursor{width:40px;height:40px}
+
+/* ── MENU OVERLAY ── */
+.menu-overlay{
+  position:fixed;inset:0;z-index:800;
+  background:var(--black);
+  transform:translateY(-100%);
+  transition:transform .65s cubic-bezier(.76,0,.24,1);
+  display:flex;
+}
+.menu-overlay.open{transform:translateY(0)}
+
+.menu-left{
+  flex:1;
+  padding:100px 60px 60px;
+  display:flex;flex-direction:column;justify-content:center;
+}
+.menu-close-row{
+  position:absolute;top:0;left:0;right:0;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:24px 28px;
+}
+.menu-close-logo{
+  font-family:var(--display);font-size:14px;font-weight:700;
+  letter-spacing:-.02em;color:var(--white);
+}
+.menu-close-btn{
+  font-family:var(--display);font-size:11px;font-weight:600;
+  letter-spacing:.14em;text-transform:uppercase;
+  color:var(--muted);cursor:none;transition:color .2s;
+}
+.menu-close-btn:hover{color:var(--white)}
+
+.menu-nav{display:flex;flex-direction:column;gap:0}
+.menu-nav-link{
+  font-family:var(--display);
+  font-size:clamp(48px,7vw,88px);
+  font-weight:800;line-height:.9;letter-spacing:-.04em;
+  color:var(--white);text-transform:lowercase;
+  padding:14px 0;
+  border-bottom:1px solid var(--border);
+  display:flex;justify-content:space-between;align-items:center;
+  transition:color .2s;
+}
+.menu-nav-link:hover{color:var(--lime)}
+.menu-nav-link .arrow{font-size:.4em;opacity:.35}
+.menu-footer-row{
+  display:flex;gap:24px;margin-top:40px;
+  font-size:12px;font-weight:400;letter-spacing:.08em;
+  text-transform:lowercase;color:var(--muted);
+}
+.menu-footer-row a{transition:color .2s}
+.menu-footer-row a:hover{color:var(--lime)}
+
+.menu-right{
+  width:40%;
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:4px;padding:4px;
+}
+.menu-img-cell{
+  background:var(--black3);
+  position:relative;overflow:hidden;
+}
+.menu-img-cell:first-child{grid-column:span 2}
+.menu-img-inner{
+  position:absolute;inset:0;
+  display:flex;align-items:center;justify-content:center;
+}
+.menu-img-geo{
+  width:100%;height:100%;
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--display);font-size:clamp(20px,4vw,48px);
+  font-weight:800;letter-spacing:-.04em;color:rgba(255,255,255,.06);
+  text-transform:uppercase;
+}
+.menu-img-label{
+  position:absolute;bottom:12px;left:14px;
+  font-size:10px;font-weight:600;letter-spacing:.12em;
+  text-transform:uppercase;color:rgba(255,255,255,.35);
+}
 
 /* ── NAV ── */
-.site-nav{
-  position:fixed;top:0;left:0;right:0;z-index:900;
-  background:var(--pink);
-  border-bottom:2.5px solid var(--black);
-  display:flex;justify-content:space-between;align-items:center;
-  padding:0 20px;height:48px;
-  /* Start visible, no transform trick that causes Safari reflow */
-  opacity:0;
-  pointer-events:none;
-  transition:opacity .35s ease;
+.mainnav{
+  position:fixed;top:0;left:0;right:0;z-index:500;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:22px 28px;
+  mix-blend-mode:difference;
 }
-.site-nav.nav-show{opacity:1;pointer-events:all}
-.nav-brand{
-  font-family:var(--display);font-size:20px;font-weight:900;
-  letter-spacing:.04em;text-transform:uppercase;color:var(--black);
-}
-.nav-links{display:flex;gap:0;align-items:stretch}
-.nav-link{
+.nav-logo{
   font-family:var(--display);font-size:13px;font-weight:700;
-  letter-spacing:.12em;text-transform:uppercase;color:var(--black);
-  padding:0 14px;height:48px;display:flex;align-items:center;
-  border-left:1.5px solid rgba(0,0,0,.18);
-  transition:background .2s;
+  letter-spacing:-.02em;color:var(--white);text-transform:lowercase;
 }
-.nav-link:hover{background:rgba(0,0,0,.06)}
-.nav-cta{
-  background:var(--black);color:var(--pink);
-  font-family:var(--display);font-size:13px;font-weight:700;
-  letter-spacing:.12em;text-transform:uppercase;
-  padding:0 18px;height:48px;display:flex;align-items:center;
-  border-left:2px solid var(--black);
-  transition:background .2s;
+.nav-right{display:flex;align-items:center;gap:24px}
+.nav-action{
+  font-family:var(--body);font-size:12px;font-weight:500;
+  letter-spacing:.08em;text-transform:lowercase;
+  color:var(--white);transition:color .2s;
 }
-.nav-cta:hover{background:#222}
-.nav-hamburger{
-  display:none;flex-direction:column;gap:5px;cursor:pointer;
-  padding:8px;
+.nav-action:hover{color:var(--lime)}
+.nav-menu-btn{
+  font-family:var(--body);font-size:12px;font-weight:500;
+  letter-spacing:.08em;text-transform:lowercase;
+  color:var(--white);cursor:none;transition:color .2s;
+  display:flex;flex-direction:column;gap:5px;align-items:flex-end;
 }
-.nav-hamburger span{
-  display:block;width:22px;height:2px;background:var(--black);
-  transition:transform .3s,opacity .3s;
+.nav-menu-btn span{
+  display:block;height:1.5px;background:currentColor;
+  transition:width .3s;
 }
-.mobile-menu{
-  display:none;
-  position:fixed;top:48px;left:0;right:0;z-index:800;
-  background:var(--pink);
-  border-bottom:2.5px solid var(--black);
-  flex-direction:column;
-  opacity:0;pointer-events:none;
-  transition:opacity .25s;
-}
-.mobile-menu.open{opacity:1;pointer-events:all}
-.mobile-link{
-  font-family:var(--display);font-size:18px;font-weight:800;
-  letter-spacing:.12em;text-transform:uppercase;color:var(--black);
-  padding:16px 24px;border-bottom:1.5px solid rgba(0,0,0,.12);
-  display:block;
-}
-.mobile-link:last-child{border-bottom:none;background:var(--black);color:var(--pink)}
+.nav-menu-btn span:first-child{width:20px}
+.nav-menu-btn span:last-child{width:14px}
+.nav-menu-btn:hover span{width:20px!important}
+.nav-menu-btn:hover{color:var(--lime)}
 
-/* ── HERO / POSTER SECTION ── */
-.poster-hero{
-  background:var(--cream);
-  padding:24px 24px 0;
-  border-bottom:3px solid var(--black);
+/* ── HERO ── */
+.hero{
+  min-height:100vh;
+  display:flex;flex-direction:column;
+  justify-content:flex-end;
+  padding:0 28px 40px;
+  position:relative;overflow:hidden;
+  background:var(--black);
 }
 
-/* Title row */
-.studio-name{
+/* Big background QC watermark */
+.hero-bg-type{
+  position:absolute;
   font-family:var(--display);
-  font-size:clamp(28px,7vw,88px);
-  font-weight:900;letter-spacing:.04em;text-transform:uppercase;
-  color:var(--black);text-align:center;line-height:1;
-  padding-bottom:10px;
+  font-size:clamp(180px,32vw,480px);
+  font-weight:900;letter-spacing:-.05em;
+  color:rgba(255,255,255,.025);
+  line-height:.85;
+  top:50%;left:50%;
+  transform:translate(-50%,-48%);
+  pointer-events:none;user-select:none;
+  white-space:nowrap;z-index:0;
 }
 
-/* Pink band */
-.pink-band{
-  background:var(--pink);
-  margin:0 -24px;
-  padding:8px 24px;
-  display:flex;justify-content:space-between;align-items:center;
-  border-top:2.5px solid var(--black);
-  border-bottom:2.5px solid var(--black);
-  flex-wrap:wrap;gap:4px;
+/* Thin horizontal lines */
+.hero-lines{
+  position:absolute;inset:0;pointer-events:none;z-index:0;
 }
-.pink-band-text{
+.hero-line{
+  position:absolute;left:0;right:0;height:1px;
+  background:var(--border);
+}
+
+.hero-top-meta{
+  position:absolute;top:80px;left:28px;
+  font-size:11px;font-weight:400;letter-spacing:.14em;
+  text-transform:lowercase;color:var(--muted);
+  display:flex;align-items:center;gap:16px;
+  z-index:2;
+}
+.hero-top-meta::before{
+  content:'';display:block;width:6px;height:6px;
+  border-radius:50%;background:var(--lime);
+  animation:pulse 2s ease-in-out infinite;
+}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.7)}}
+
+.hero-content{position:relative;z-index:2}
+
+.hero-name{
   font-family:var(--display);
-  font-size:clamp(13px,2vw,22px);
-  font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--black);
+  font-size:clamp(72px,14vw,200px);
+  font-weight:900;line-height:.82;letter-spacing:-.05em;
+  text-transform:lowercase;
+  color:var(--white);
+  margin-bottom:0;
 }
+.hero-name .lime{color:var(--lime)}
 
-/* 3D Chrome bevel block */
-.bevel-block{
-  margin:0 -24px;
+.hero-bottom-row{
+  display:flex;justify-content:space-between;align-items:flex-end;
+  margin-top:28px;padding-top:20px;
+  border-top:1px solid var(--border);
+}
+.hero-subtitle{
+  font-family:var(--display);font-size:clamp(11px,1.4vw,16px);
+  font-weight:400;letter-spacing:.1em;text-transform:lowercase;
+  color:var(--muted);
+}
+.hero-cta{
+  font-family:var(--display);font-size:12px;font-weight:700;
+  letter-spacing:.14em;text-transform:lowercase;
+  color:var(--black);background:var(--lime);
+  padding:14px 28px;
+  transition:background .2s,transform .15s;
+  display:inline-block;
+}
+.hero-cta:hover{background:var(--lime2);transform:translateY(-2px)}
+
+.hero-scroll-hint{
+  position:absolute;right:28px;bottom:44px;z-index:2;
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+}
+.hero-scroll-hint span{
+  font-size:9px;font-weight:500;letter-spacing:.18em;
+  text-transform:lowercase;color:var(--dim);
+  writing-mode:vertical-lr;
+}
+.hero-scroll-line{
+  width:1px;height:40px;
+  background:linear-gradient(to bottom,var(--lime),transparent);
+  animation:scrl 2.2s ease-in-out infinite;
+}
+@keyframes scrl{0%,100%{opacity:.3}50%{opacity:1}}
+
+/* ── TAGLINE SECTION ── */
+.tagline-section{
+  padding:100px 28px;
+  border-top:1px solid var(--border);
+  position:relative;overflow:hidden;
+}
+.tagline-text{
+  font-family:var(--display);
+  font-size:clamp(28px,5vw,64px);
+  font-weight:700;line-height:1.05;
+  letter-spacing:-.04em;
+  color:var(--white);
+  max-width:900px;
+}
+.tagline-text .accent{color:var(--lime)}
+.tagline-text .italic{
+  font-style:italic;font-weight:300;
+  color:rgba(255,255,255,.5);
+}
+.tagline-meta{
+  display:flex;justify-content:space-between;align-items:flex-end;
+  margin-top:40px;padding-top:28px;
+  border-top:1px solid var(--border);
+}
+.tagline-meta-label{
+  font-size:11px;font-weight:400;letter-spacing:.14em;
+  text-transform:lowercase;color:var(--muted);
+}
+.tagline-meta-link{
+  font-family:var(--display);font-size:12px;font-weight:600;
+  letter-spacing:.12em;text-transform:lowercase;
+  color:var(--white);border-bottom:1px solid var(--border);
+  padding-bottom:3px;transition:border-color .2s,color .2s;
+}
+.tagline-meta-link:hover{color:var(--lime);border-color:var(--lime)}
+
+/* ── HORIZONTAL SCROLL STRIP ── */
+.strip-section{
+  padding:0 0 0 28px;
+  border-top:1px solid var(--border);
   overflow:hidden;
-  border-bottom:2.5px solid var(--black);
 }
-.bevel-inner{
-  background:linear-gradient(180deg,
-    #d0cec8 0%,#b8b6b0 8%,#e4e2dc 16%,
-    #c0beba 24%,#a8a6a2 32%,#d8d6d0 40%,
-    #c4c2bc 48%,#b0aea8 56%,#d0cec8 64%,
-    #b8b6b0 72%,#e0ded8 80%,#c8c6c0 88%,#a8a6a2 100%);
-  padding:12px 36px 16px;position:relative;overflow:hidden;
+.strip-head{
+  padding:48px 0 32px;
+  font-size:11px;font-weight:400;letter-spacing:.14em;
+  text-transform:lowercase;color:var(--muted);
+  padding-right:28px;
+  display:flex;justify-content:space-between;align-items:center;
 }
-.bevel-edge-l{
-  position:absolute;left:0;top:0;bottom:0;width:20px;
-  background:linear-gradient(90deg,#888884,#d0cec8);
+.strip-track{
+  display:flex;gap:16px;
+  overflow-x:auto;scroll-snap-type:x mandatory;
+  -webkit-overflow-scrolling:touch;
+  scrollbar-width:none;padding-right:28px;padding-bottom:40px;
 }
-.bevel-edge-r{
-  position:absolute;right:0;top:0;bottom:0;width:20px;
-  background:linear-gradient(270deg,#888884,#d0cec8);
+.strip-track::-webkit-scrollbar{display:none}
+.strip-card{
+  flex:0 0 clamp(260px,38vw,460px);
+  scroll-snap-align:start;
+  position:relative;
 }
-.bevel-type{
-  font-family:var(--display);
-  font-size:clamp(48px,14vw,190px);
-  font-weight:900;font-style:italic;
-  text-transform:uppercase;
-  letter-spacing:-.02em;line-height:.88;
-  text-align:center;position:relative;z-index:2;
-  color:transparent;
-  background:linear-gradient(180deg,
-    #fff 0%,#d0cec8 10%,#686866 22%,
-    #c8c6c0 32%,#fff 42%,#a8a6a0 52%,
-    #606060 62%,#d8d6d0 72%,
-    #fff 82%,#8a8888 92%,#404040 100%);
-  -webkit-background-clip:text;background-clip:text;
-  -webkit-text-fill-color:transparent;
-  filter:drop-shadow(2px 4px 0 rgba(0,0,0,.45)) drop-shadow(4px 8px 0 rgba(0,0,0,.22));
-}
-
-/* Pink subtitle band */
-.pink-sub-band{
-  background:var(--pink);
-  margin:0 -24px;
-  padding:9px 24px;
-  text-align:center;
-  border-top:2.5px solid var(--black);
-  border-bottom:2.5px solid var(--black);
-}
-.pink-sub-text{
-  font-family:var(--display);
-  font-size:clamp(12px,1.8vw,20px);
-  font-weight:700;letter-spacing:.28em;text-transform:uppercase;color:var(--black);
-}
-
-/* Dark zone with SVG art */
-.hero-dark{
-  margin:0 -24px;
-  background:var(--dark);
-  min-height:clamp(260px,48vh,620px);
+.strip-card-img{
+  width:100%;aspect-ratio:4/5;
+  background:var(--black3);
   position:relative;overflow:hidden;
   display:flex;align-items:center;justify-content:center;
 }
-.hero-dark svg{
-  position:absolute;inset:0;width:100%;height:100%;
-  display:block;
-}
-
-/* Bottom info bar */
-.info-bar{
-  margin:0 -24px;
-  background:var(--cream);
-  border-top:2.5px solid var(--black);
-  display:flex;flex-wrap:wrap;
-  align-items:stretch;
-}
-.info-cell{
-  flex:1;min-width:0;
-  padding:12px 16px;
-  border-right:2px solid var(--black);
-  display:flex;flex-direction:column;justify-content:center;
-  align-items:center;text-align:center;
-}
-.info-cell:last-child{border-right:none;min-width:64px;flex:0 0 auto}
-.ic-label{
-  font-family:var(--display);font-size:9px;font-weight:700;
-  letter-spacing:.2em;text-transform:uppercase;color:rgba(0,0,0,.35);
-  margin-bottom:3px;
-}
-.ic-value{
-  font-family:var(--display);font-size:clamp(11px,1.6vw,16px);font-weight:800;
-  text-transform:uppercase;letter-spacing:.06em;color:var(--black);
-}
-.ic-value a{color:var(--black)}
-.logo-cell{
-  border-left:2.5px solid var(--black);
-  padding:10px 14px;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  gap:2px;
-}
-.logo-cell-big{
-  font-family:var(--display);font-size:clamp(20px,3.5vw,32px);
-  font-weight:900;line-height:1;color:var(--black);
-}
-.logo-cell-small{
-  font-family:var(--display);font-size:clamp(7px,1vw,9px);
-  font-weight:700;letter-spacing:.12em;text-transform:uppercase;
-  color:var(--black);text-align:center;
-  border-top:1.5px solid var(--black);padding-top:3px;
-  width:100%;
-}
-
-/* ── SHARED SECTION STYLES ── */
-.section{border-bottom:3px solid var(--black)}
-.section-pink-head{
-  background:var(--pink);
-  border-bottom:2.5px solid var(--black);
-  padding:10px 24px;
-  display:flex;justify-content:space-between;align-items:center;
-  flex-wrap:wrap;gap:4px;
-}
-.sph-title{
-  font-family:var(--display);font-size:clamp(18px,3vw,34px);
-  font-weight:900;text-transform:uppercase;letter-spacing:.08em;color:var(--black);
-}
-.sph-sub{
-  font-family:var(--display);font-size:12px;font-weight:700;
-  letter-spacing:.22em;text-transform:uppercase;color:rgba(0,0,0,.45);
-}
-
-.section-inner{padding:48px 24px;max-width:1100px;margin:0 auto}
-.section-inner-narrow{padding:48px 24px;max-width:800px;margin:0 auto}
-.section-inner-wide{padding:40px 24px}
-
-/* Section headings */
-.sec-heading{
+.strip-card-geo{
+  position:absolute;inset:0;
+  display:flex;align-items:center;justify-content:center;
   font-family:var(--display);
-  font-size:clamp(52px,10vw,130px);
-  font-weight:900;font-style:italic;text-transform:uppercase;
-  letter-spacing:-.02em;line-height:.86;
-  color:var(--black);text-align:center;margin-bottom:32px;
+  font-size:clamp(20px,5vw,56px);
+  font-weight:900;color:rgba(255,255,255,.04);
+  letter-spacing:-.04em;text-transform:uppercase;
 }
-.sec-eyebrow{
-  font-family:var(--display);font-size:11px;font-weight:700;
-  letter-spacing:.28em;text-transform:uppercase;color:var(--gray);
-  text-align:center;margin-bottom:14px;
+/* Distinct tonal backgrounds per card */
+.scard-1{background:linear-gradient(160deg,#1a1a0a,#0d0d0a)}
+.scard-2{background:linear-gradient(160deg,#0a1a0a,#080d08)}
+.scard-3{background:linear-gradient(160deg,#0a0a1a,#08080d)}
+.scard-4{background:linear-gradient(160deg,#1a0a0a,#0d0808)}
+.scard-5{background:linear-gradient(160deg,#0a1a1a,#080d0d)}
+.scard-6{background:linear-gradient(160deg,#1a0a1a,#0d080d)}
+.scard-7{background:linear-gradient(160deg,#141410,#0f0f0c)}
+.scard-8{background:linear-gradient(160deg,#0a1410,#080d0b)}
+
+/* Lime accent bar top */
+.strip-card-img::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:var(--lime);transform:scaleX(0);transform-origin:left;
+  transition:transform .4s cubic-bezier(.25,.46,.45,.94);z-index:2;
 }
-.sec-body{
-  font-size:15px;font-weight:300;color:#444;
-  line-height:1.9;text-align:center;max-width:640px;
-  margin:0 auto 28px;
+.strip-card:hover .strip-card-img::before{transform:scaleX(1)}
+.strip-card-caption{
+  padding:14px 0 0;
+}
+.strip-card-location{
+  font-size:10px;font-weight:400;letter-spacing:.12em;
+  text-transform:lowercase;color:var(--muted);margin-bottom:5px;
+}
+.strip-card-title{
+  font-family:var(--display);font-size:clamp(13px,1.6vw,18px);
+  font-weight:700;letter-spacing:-.02em;
+  color:var(--white);line-height:1.2;
 }
 
-/* ── ABOUT ── */
-.about-section{background:var(--cream)}
-.about-two-col{
-  display:grid;grid-template-columns:1fr 1fr;gap:2px;
-  background:var(--black);margin-bottom:40px;
+/* ── BIG SPLIT HEADINGS ── */
+.split-section{
+  border-top:1px solid var(--border);
+  display:grid;grid-template-columns:1fr 1fr;
 }
-.about-col{
-  background:var(--cream);padding:36px 28px;
+.split-cell{
+  padding:80px 40px;
+  border-right:1px solid var(--border);
+  position:relative;overflow:hidden;
+  cursor:none;transition:background .3s;
 }
-.about-col-dark{background:var(--cream2)}
-.about-col-pink{background:var(--pink)}
-.about-body{
-  font-size:14px;font-weight:300;color:#444;
-  line-height:1.9;margin-bottom:14px;
+.split-cell:last-child{border-right:none}
+.split-cell:hover{background:rgba(196,241,53,.03)}
+.split-heading{
+  font-family:var(--display);
+  font-size:clamp(64px,10vw,140px);
+  font-weight:900;line-height:.82;letter-spacing:-.05em;
+  text-transform:uppercase;color:var(--white);
+  margin-bottom:24px;
+  transition:color .25s;
 }
-.stat-row{
-  display:grid;grid-template-columns:repeat(4,1fr);
-  gap:2px;background:var(--black);margin-bottom:32px;
+.split-cell:hover .split-heading{color:var(--lime)}
+.split-body{
+  font-size:14px;font-weight:300;color:var(--muted);
+  line-height:1.75;max-width:320px;margin-bottom:28px;
 }
-.stat-cell{
-  background:var(--cream);padding:24px 16px;text-align:center;
+.split-link{
+  font-family:var(--display);font-size:11px;font-weight:600;
+  letter-spacing:.14em;text-transform:lowercase;
+  color:var(--white);
+  display:inline-flex;align-items:center;gap:8px;
+  transition:gap .2s,color .2s;
 }
-.stat-cell:nth-child(2){background:var(--pink)}
-.stat-cell:nth-child(3){background:var(--cream2)}
-.stat-num{
-  font-family:var(--display);font-size:clamp(36px,6vw,68px);
-  font-weight:900;line-height:.9;color:var(--black);margin-bottom:6px;
-}
-.stat-label{
-  font-family:var(--display);font-size:10px;font-weight:700;
-  letter-spacing:.18em;text-transform:uppercase;color:var(--gray);
+.split-link:hover{gap:14px;color:var(--lime)}
+.split-num{
+  position:absolute;bottom:24px;right:32px;
+  font-family:var(--display);font-size:72px;font-weight:900;
+  color:rgba(255,255,255,.03);letter-spacing:-.04em;
+  pointer-events:none;
 }
 
-/* ── SERVICES ── */
-.services-section{background:var(--dark)}
-.svc-list{display:flex;flex-direction:column;gap:2px}
-.svc-row{
-  display:grid;grid-template-columns:44px 1fr auto;
-  align-items:center;gap:16px;padding:18px 20px;
-  background:rgba(255,255,255,.04);
-  border:1px solid rgba(255,255,255,.06);
+/* ── PORTFOLIO GRID ── */
+.portfolio-section{
+  padding:80px 28px;
+  border-top:1px solid var(--border);
+}
+.portfolio-head{
+  display:flex;justify-content:space-between;align-items:flex-end;
+  margin-bottom:48px;
+}
+.portfolio-heading{
+  font-family:var(--display);
+  font-size:clamp(40px,7vw,96px);
+  font-weight:900;line-height:.82;letter-spacing:-.05em;
+  text-transform:lowercase;color:var(--white);
+}
+.portfolio-sub{
+  font-size:13px;font-weight:300;color:var(--muted);
+  max-width:280px;text-align:right;line-height:1.7;
+  padding-bottom:6px;
+}
+.portfolio-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:2px;
+  background:rgba(255,255,255,.06);
+}
+.portfolio-card{
+  background:var(--black);
+  position:relative;overflow:hidden;cursor:none;
   transition:background .25s;
 }
-.svc-row:hover{background:rgba(242,184,198,.09);border-color:rgba(242,184,198,.25)}
-.svc-row:hover .svc-name{color:var(--pink)}
-.svc-n{
-  font-family:var(--display);font-size:22px;font-weight:900;
-  color:rgba(255,255,255,.1);line-height:1;letter-spacing:-.02em;
-  text-align:center;
+.portfolio-card:hover{background:var(--black3)}
+.portfolio-card-img{
+  aspect-ratio:3/4;
+  position:relative;overflow:hidden;
+  display:flex;align-items:center;justify-content:center;
 }
-.svc-info{min-width:0}
+/* Hover: lime top bar */
+.portfolio-card-img::after{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:var(--lime);transform:scaleX(0);transform-origin:left;
+  transition:transform .35s cubic-bezier(.25,.46,.45,.94);z-index:2;
+}
+.portfolio-card:hover .portfolio-card-img::after{transform:scaleX(1)}
+/* Year badge */
+.portfolio-card-year{
+  position:absolute;top:14px;right:14px;
+  font-family:var(--display);font-size:10px;font-weight:700;
+  letter-spacing:.1em;color:rgba(255,255,255,.3);
+  background:rgba(0,0,0,.5);padding:4px 10px;z-index:2;
+}
+.portfolio-card-body{
+  padding:18px 18px 24px;
+  border-top:1px solid var(--border);
+}
+.portfolio-card-cat{
+  font-size:10px;font-weight:400;letter-spacing:.12em;
+  text-transform:lowercase;color:var(--muted);margin-bottom:5px;
+}
+.portfolio-card-name{
+  font-family:var(--display);font-size:clamp(14px,1.8vw,20px);
+  font-weight:700;letter-spacing:-.02em;text-transform:lowercase;
+  color:var(--white);line-height:1.15;
+  transition:color .2s;
+}
+.portfolio-card:hover .portfolio-card-name{color:var(--lime)}
+
+/* Dark backgrounds for portfolio cells */
+.pg-1{background:linear-gradient(160deg,#1a1a0a 0%,#0d0d05 100%)}
+.pg-2{background:linear-gradient(160deg,#0a1a10 0%,#060d0a 100%)}
+.pg-3{background:linear-gradient(160deg,#0d0a1a 0%,#08060d 100%)}
+.pg-4{background:linear-gradient(160deg,#1a0d0a 0%,#0d0806 100%)}
+.pg-5{background:linear-gradient(160deg,#0a1420 0%,#060d14 100%)}
+.pg-6{background:linear-gradient(160deg,#1a100a 0%,#0d0a06 100%)}
+
+/* ── SERVICES LIST ── */
+.services-section{
+  border-top:1px solid var(--border);
+  padding:0 28px;
+}
+.services-heading-row{
+  padding:64px 0 0;
+  display:flex;justify-content:space-between;align-items:flex-end;
+  border-bottom:1px solid var(--border);
+  padding-bottom:32px;
+  margin-bottom:0;
+}
+.services-title{
+  font-family:var(--display);
+  font-size:clamp(40px,7vw,96px);
+  font-weight:900;line-height:.82;
+  letter-spacing:-.05em;text-transform:lowercase;
+  color:var(--white);
+}
+.services-list{border-top:1px solid var(--border);margin-top:0}
+.service-row{
+  display:grid;grid-template-columns:48px 1fr 1fr auto;
+  align-items:center;gap:24px;
+  padding:28px 0;
+  border-bottom:1px solid var(--border);
+  transition:background .2s;
+  cursor:none;
+}
+.service-row:hover{background:rgba(196,241,53,.03)}
+.service-row:hover .svc-name{color:var(--lime)}
+.svc-n{
+  font-family:var(--display);font-size:11px;font-weight:400;
+  letter-spacing:.1em;color:var(--dim);text-align:right;
+}
 .svc-name{
-  font-family:var(--display);font-size:clamp(17px,2.5vw,26px);
-  font-weight:800;text-transform:uppercase;letter-spacing:.03em;
-  color:var(--cream);line-height:1.05;
-  transition:color .25s;margin-bottom:3px;
+  font-family:var(--display);font-size:clamp(18px,2.5vw,32px);
+  font-weight:700;letter-spacing:-.03em;text-transform:lowercase;
+  color:var(--white);line-height:1;transition:color .25s;
 }
 .svc-desc{
-  font-size:12px;font-weight:300;color:rgba(255,255,255,.4);line-height:1.6;
+  font-size:13px;font-weight:300;color:var(--muted);line-height:1.65;
 }
 .svc-cta{
   font-family:var(--display);font-size:11px;font-weight:700;
-  letter-spacing:.14em;text-transform:uppercase;color:var(--pink);
-  border-bottom:1.5px solid rgba(242,184,198,.4);padding-bottom:3px;
-  white-space:nowrap;transition:border-color .2s;flex-shrink:0;
+  letter-spacing:.12em;text-transform:lowercase;
+  color:var(--lime);white-space:nowrap;
+  display:flex;align-items:center;gap:5px;
+  transition:gap .2s;
 }
-.svc-cta:hover{border-color:var(--pink)}
+.svc-cta:hover{gap:9px}
 
-/* ── WORK ── */
-.work-section{background:var(--cream)}
-.work-grid{
-  display:grid;
-  grid-template-columns:repeat(5,1fr);
-  gap:2px;background:var(--black);
+/* ── PARTNERS / CLIENTS ── */
+.partners-section{
+  padding:80px 28px;
+  border-top:1px solid var(--border);
 }
-.wc{
-  background:var(--cream2);
-  padding:20px 16px 24px;
-  transition:background .2s;cursor:default;
+.partners-heading-row{
+  display:flex;justify-content:space-between;align-items:flex-end;
+  margin-bottom:60px;
 }
-.wc:hover{background:var(--pink)}
-.wc-n{
-  font-family:var(--display);font-size:10px;font-weight:700;
-  letter-spacing:.18em;text-transform:uppercase;
-  color:rgba(0,0,0,.3);margin-bottom:8px;
+.partners-title{
+  font-family:var(--display);
+  font-size:clamp(40px,6vw,80px);
+  font-weight:900;line-height:.82;letter-spacing:-.05em;
+  text-transform:lowercase;color:var(--white);
 }
-.wc-name{
-  font-family:var(--display);font-size:clamp(13px,1.8vw,18px);
-  font-weight:800;text-transform:uppercase;letter-spacing:.03em;
-  color:var(--black);line-height:1.1;margin-bottom:4px;
+.partners-sub{
+  font-size:13px;font-weight:300;color:var(--muted);
+  max-width:280px;text-align:right;line-height:1.7;padding-bottom:4px;
 }
-.wc-type{font-size:11px;font-weight:300;color:rgba(0,0,0,.45);letter-spacing:.04em}
+.partners-grid{
+  display:grid;grid-template-columns:repeat(5,1fr);
+  gap:1px;background:var(--border);
+}
+.partner-cell{
+  background:var(--black);
+  padding:32px 24px;
+  display:flex;flex-direction:column;justify-content:space-between;
+  transition:background .2s;cursor:none;
+}
+.partner-cell:hover{background:var(--black3)}
+.partner-cell-name{
+  font-family:var(--display);font-size:clamp(13px,1.6vw,18px);
+  font-weight:700;letter-spacing:-.02em;text-transform:lowercase;
+  color:var(--white);line-height:1.15;transition:color .2s;
+}
+.partner-cell:hover .partner-cell-name{color:var(--lime)}
+.partner-cell-type{
+  font-size:10px;font-weight:400;letter-spacing:.1em;
+  text-transform:lowercase;color:var(--dim);margin-top:8px;
+}
 
-/* ── PROCESS ── */
-.process-section{background:var(--dark)}
-.process-grid{
+/* ── PROCESS SECTION ── */
+.process-section{
+  border-top:1px solid var(--border);
+  padding:80px 28px;
+}
+.process-heading{
+  font-family:var(--display);
+  font-size:clamp(52px,9vw,120px);
+  font-weight:900;line-height:.82;letter-spacing:-.05em;
+  text-transform:lowercase;color:var(--white);
+  margin-bottom:60px;
+}
+.process-steps{
   display:grid;grid-template-columns:repeat(4,1fr);
-  gap:2px;background:rgba(255,255,255,.06);
+  gap:1px;background:var(--border);
 }
-.pc{
-  background:var(--dark);padding:36px 24px 44px;
-  position:relative;overflow:hidden;transition:background .3s;
+.process-card{
+  background:var(--black);padding:40px 28px 48px;
+  position:relative;transition:background .25s;
 }
-.pc:hover{background:#222}
-.pc-n{
-  font-family:var(--display);font-size:88px;font-weight:900;
-  color:rgba(255,255,255,.04);
-  position:absolute;top:8px;right:10px;line-height:1;letter-spacing:-.04em;
-  pointer-events:none;
-}
-.pc-label{
-  font-family:var(--display);font-size:10px;font-weight:700;
-  letter-spacing:.26em;text-transform:uppercase;color:var(--pink);
-  margin-bottom:12px;
+.process-card:hover{background:var(--black3)}
+.process-card:hover .pc-title{color:var(--lime)}
+.pc-num{
+  font-family:var(--display);font-size:10px;font-weight:400;
+  letter-spacing:.14em;text-transform:lowercase;
+  color:var(--lime);margin-bottom:20px;
 }
 .pc-title{
-  font-family:var(--display);font-size:clamp(20px,2.5vw,30px);
-  font-weight:800;text-transform:uppercase;letter-spacing:.03em;
-  color:var(--cream);line-height:1.05;margin-bottom:10px;
+  font-family:var(--display);font-size:clamp(18px,2.2vw,26px);
+  font-weight:700;letter-spacing:-.02em;text-transform:lowercase;
+  color:var(--white);margin-bottom:12px;line-height:1.1;
+  transition:color .25s;
 }
-.pc-body{font-size:13px;font-weight:300;color:rgba(255,255,255,.4);line-height:1.8}
+.pc-body{
+  font-size:13px;font-weight:300;color:var(--muted);line-height:1.75;
+}
 
-/* ── CONTACT ── */
-.contact-section{background:var(--cream)}
-.contact-bevel-block{border-bottom:2.5px solid var(--black);overflow:hidden}
-.contact-bevel-inner{
-  background:linear-gradient(180deg,
-    #d0cec8 0%,#b8b6b0 8%,#e4e2dc 16%,
-    #c0beba 24%,#a8a6a2 32%,#d8d6d0 40%,
-    #c4c2bc 48%,#b0aea8 56%,#d0cec8 64%,
-    #b8b6b0 72%,#e0ded8 80%,#c8c6c0 88%,#a8a6a2 100%);
-  padding:10px 36px 14px;position:relative;overflow:hidden;
+/* ── CTA BAND ── */
+.cta-section{
+  border-top:1px solid var(--border);
+  padding:100px 28px;
+  text-align:center;
+  position:relative;overflow:hidden;
+  background:var(--black);
 }
-.contact-bevel-inner::before{
-  content:'';position:absolute;left:0;top:0;bottom:0;width:18px;
-  background:linear-gradient(90deg,#888884,#d0cec8);
+.cta-section::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 60% 50% at 50% 50%,rgba(196,241,53,.06) 0%,transparent 70%);
+  pointer-events:none;
 }
-.contact-bevel-inner::after{
-  content:'';position:absolute;right:0;top:0;bottom:0;width:18px;
-  background:linear-gradient(270deg,#888884,#d0cec8);
-}
-.contact-bevel-type{
+.cta-big{
   font-family:var(--display);
-  font-size:clamp(36px,8vw,120px);
-  font-weight:900;font-style:italic;text-transform:uppercase;
-  letter-spacing:-.02em;line-height:.88;text-align:center;
-  position:relative;z-index:2;
-  color:transparent;
-  background:linear-gradient(180deg,
-    #fff 0%,#d0cec8 10%,#686866 22%,
-    #c8c6c0 32%,#fff 42%,#a8a6a0 52%,
-    #606060 62%,#d8d6d0 72%,
-    #fff 82%,#8a8888 92%,#404040 100%);
-  -webkit-background-clip:text;background-clip:text;
-  -webkit-text-fill-color:transparent;
-  filter:drop-shadow(2px 4px 0 rgba(0,0,0,.4)) drop-shadow(4px 8px 0 rgba(0,0,0,.2));
+  font-size:clamp(52px,10vw,140px);
+  font-weight:900;line-height:.82;letter-spacing:-.05em;
+  text-transform:lowercase;color:var(--white);
+  margin-bottom:32px;position:relative;
 }
-
-.contact-grid{
-  display:grid;grid-template-columns:1fr 1fr;gap:2px;background:var(--black);
+.cta-big .lime{color:var(--lime)}
+.cta-sub{
+  font-size:16px;font-weight:300;color:var(--muted);
+  max-width:440px;margin:0 auto 40px;line-height:1.75;position:relative;
 }
-.contact-col{background:var(--cream);padding:40px 28px}
-.contact-col-alt{background:var(--cream2)}
-.contact-email{
-  display:block;font-family:var(--display);
-  font-size:clamp(14px,2vw,24px);font-weight:800;
-  text-transform:uppercase;letter-spacing:.04em;color:var(--black);
-  border-bottom:2.5px solid var(--black);padding-bottom:6px;
-  margin-bottom:24px;transition:color .2s,border-color .2s;
-  word-break:break-all;
+.cta-actions{
+  display:flex;gap:14px;justify-content:center;flex-wrap:wrap;position:relative;
 }
-.contact-email:hover{color:var(--gray);border-color:var(--gray)}
-
-.ci-list{display:flex;flex-direction:column;gap:0}
-.ci-row{
-  padding:14px 0;border-bottom:1px solid rgba(0,0,0,.1);
-}
-.ci-row:first-child{border-top:1px solid rgba(0,0,0,.1)}
-.ci-label{
-  font-family:var(--display);font-size:9px;font-weight:700;
-  letter-spacing:.24em;text-transform:uppercase;color:rgba(0,0,0,.35);
-  margin-bottom:4px;
-}
-.ci-val{
-  font-family:var(--display);font-size:clamp(14px,2vw,20px);
-  font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:var(--black);
-}
-.ci-val a{color:var(--black);transition:color .2s;word-break:break-all}
-.ci-val a:hover{color:var(--gray)}
-
-/* ── BUTTONS ── */
-.btn-blk{
-  display:inline-block;background:var(--black);color:var(--cream);
+.btn-lime{
   font-family:var(--display);font-size:13px;font-weight:700;
-  letter-spacing:.18em;text-transform:uppercase;
-  padding:13px 32px;border:2px solid var(--black);
-  transition:background .25s,color .25s;text-align:center;
+  letter-spacing:.12em;text-transform:lowercase;
+  color:var(--black);background:var(--lime);
+  padding:15px 36px;
+  transition:background .2s,transform .15s;display:inline-block;
 }
-.btn-blk:hover{background:transparent;color:var(--black)}
-.btn-pink{
-  display:inline-block;background:var(--pink);color:var(--black);
-  font-family:var(--display);font-size:13px;font-weight:700;
-  letter-spacing:.18em;text-transform:uppercase;
-  padding:13px 32px;border:2px solid var(--black);
-  transition:background .25s;text-align:center;
+.btn-lime:hover{background:var(--lime2);transform:translateY(-2px)}
+.btn-outline{
+  font-family:var(--display);font-size:13px;font-weight:600;
+  letter-spacing:.12em;text-transform:lowercase;
+  color:var(--white);
+  padding:14px 32px;border:1px solid var(--border);
+  transition:border-color .2s,color .2s;display:inline-block;
 }
-.btn-pink:hover{background:var(--pink-dark)}
+.btn-outline:hover{border-color:var(--white);color:var(--white)}
 
 /* ── FOOTER ── */
-footer{background:var(--cream);border-top:none}
-.footer-pink-band{
-  background:var(--pink);border-bottom:2.5px solid var(--black);
-  padding:9px 24px;text-align:center;
+footer{
+  background:var(--black2);
+  border-top:1px solid var(--border);
+  padding:60px 28px 32px;
 }
-.fpb-text{
-  font-family:var(--display);font-size:11px;font-weight:700;
-  letter-spacing:.26em;text-transform:uppercase;color:var(--black);
+.footer-main{
+  display:grid;grid-template-columns:2fr 1fr 1fr 1fr;
+  gap:40px;padding-bottom:56px;
+  border-bottom:1px solid var(--border);margin-bottom:28px;
 }
-.footer-info{
-  display:flex;flex-wrap:wrap;border-bottom:2px solid var(--black);
+.footer-brand{
+  font-family:var(--display);font-size:clamp(24px,4vw,48px);
+  font-weight:900;letter-spacing:-.04em;text-transform:lowercase;
+  color:var(--white);margin-bottom:8px;line-height:.88;
 }
-.footer-cell{
-  flex:1;min-width:140px;
-  padding:16px 20px;border-right:2px solid var(--black);
-  display:flex;flex-direction:column;align-items:center;
-  justify-content:center;text-align:center;
+.footer-brand span{color:var(--lime)}
+.footer-tagline{
+  font-size:11px;font-weight:400;letter-spacing:.1em;
+  text-transform:lowercase;color:var(--dim);margin-bottom:20px;
 }
-.footer-cell:last-child{border-right:none}
-.fc-lbl{
-  font-family:var(--display);font-size:9px;font-weight:700;
-  letter-spacing:.2em;text-transform:uppercase;color:rgba(0,0,0,.35);
-  margin-bottom:4px;
+.footer-about{
+  font-size:13px;font-weight:300;color:rgba(255,255,255,.35);
+  line-height:1.75;margin-bottom:18px;max-width:300px;
 }
-.fc-val{
-  font-family:var(--display);font-size:clamp(12px,1.6vw,16px);
-  font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--black);
-  word-break:break-all;
+.footer-email{
+  font-family:var(--display);font-size:13px;font-weight:600;
+  letter-spacing:-.01em;text-transform:lowercase;color:var(--lime);
+  transition:color .2s;
 }
-.fc-val a{color:var(--black);transition:color .2s}
-.fc-val a:hover{color:var(--gray)}
-.footer-logo-box{
-  flex:0 0 auto;min-width:72px;
-  border-left:2.5px solid var(--black);
-  display:flex;flex-direction:column;align-items:center;
-  justify-content:center;padding:10px 14px;
+.footer-email:hover{color:var(--lime2)}
+.footer-col-head{
+  font-family:var(--display);font-size:10px;font-weight:600;
+  letter-spacing:.14em;text-transform:lowercase;color:var(--dim);
+  margin-bottom:18px;padding-bottom:10px;border-bottom:1px solid var(--border);
 }
-.flb-main{
-  font-family:var(--display);font-size:clamp(18px,3vw,28px);
-  font-weight:900;line-height:1;color:var(--black);
+.footer-links{list-style:none;display:flex;flex-direction:column;gap:10px}
+.footer-links a{
+  font-size:13px;font-weight:300;color:rgba(255,255,255,.45);transition:color .2s;
 }
-.flb-sub{
-  font-family:var(--display);font-size:clamp(7px,.9vw,9px);
-  font-weight:700;letter-spacing:.1em;text-transform:uppercase;
-  color:var(--black);border-top:1.5px solid var(--black);
-  padding-top:3px;margin-top:3px;text-align:center;
-}
+.footer-links a:hover{color:var(--white)}
 .footer-bottom{
-  padding:12px 24px;
-  display:flex;flex-wrap:wrap;gap:10px;
-  justify-content:space-between;align-items:center;
+  display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;
 }
 .footer-copy{
-  font-family:var(--display);font-size:11px;font-weight:600;
-  letter-spacing:.12em;text-transform:uppercase;color:rgba(0,0,0,.4);
+  font-size:11px;font-weight:300;color:rgba(255,255,255,.22);
+  letter-spacing:.06em;text-transform:lowercase;
 }
-.footer-socials{display:flex;flex-wrap:wrap;gap:14px}
-.fsoc{
-  font-family:var(--display);font-size:11px;font-weight:700;
-  letter-spacing:.12em;text-transform:uppercase;color:var(--black);
-  border-bottom:1.5px solid rgba(0,0,0,.3);padding-bottom:2px;
-  transition:border-color .2s;
+.footer-socials{display:flex;gap:20px}
+.footer-socials a{
+  font-family:var(--display);font-size:11px;font-weight:500;
+  letter-spacing:.1em;text-transform:lowercase;
+  color:rgba(255,255,255,.35);transition:color .2s;
 }
-.fsoc:hover{border-color:var(--black)}
+.footer-socials a:hover{color:var(--lime)}
 
-/* ── REVEAL (no initial transform — prevents Safari layout issues) ── */
-.rv{opacity:0;transition:opacity .7s ease}
-.rv.in{opacity:1}
-/* Subtle upward movement only — tiny, won't cause reflow in Safari */
-.rv-up{opacity:0;transition:opacity .7s ease,transform .7s ease;
-  transform:translateY(14px) translateZ(0)}
-.rv-up.in{opacity:1;transform:translateY(0) translateZ(0)}
+/* ── REVEAL ── */
+.rv{opacity:0;transform:translateY(20px) translateZ(0);transition:opacity .8s ease,transform .8s ease}
+.rv.in{opacity:1;transform:translateY(0) translateZ(0)}
 
-/* ── MOBILE RESPONSIVE ── */
-@media(max-width:700px){
-  /* Nav */
-  .nav-links{display:none}
-  .nav-hamburger{display:flex}
-  .mobile-menu{display:flex}
-
-  /* Hero bands */
-  .pink-band{flex-direction:column;align-items:center;gap:2px;text-align:center}
-
-  /* Info bar stacks */
-  .info-bar{flex-direction:column}
-  .info-cell{border-right:none;border-bottom:1.5px solid var(--black);flex:none;width:100%}
-  .logo-cell{border-left:none;border-top:2px solid var(--black);width:100%;flex-direction:row;justify-content:center;gap:12px}
-
-  /* About two-col → single */
-  .about-two-col{grid-template-columns:1fr}
-  .stat-row{grid-template-columns:1fr 1fr}
-
-  /* Services */
-  .svc-row{grid-template-columns:36px 1fr;gap:10px}
-  .svc-cta{display:none}
-
-  /* Work grid → 2 col */
-  .work-grid{grid-template-columns:repeat(2,1fr)}
-
-  /* Process → 2 col */
-  .process-grid{grid-template-columns:1fr 1fr}
-
-  /* Contact grid → single */
-  .contact-grid{grid-template-columns:1fr}
-
-  /* Footer info → wrap naturally */
-  .footer-info{flex-direction:column}
-  .footer-cell{border-right:none;border-bottom:1.5px solid var(--black);min-width:100%}
-  .footer-logo-box{border-left:none;border-top:2px solid var(--black);flex-direction:row;gap:10px;width:100%;justify-content:center}
-
-  /* Section inner padding */
-  .section-inner,.section-inner-narrow{padding:36px 16px}
-  .section-inner-wide{padding:32px 16px}
+/* ── MOBILE ── */
+@media(max-width:768px){
+  .menu-right{display:none}
+  .menu-overlay{flex-direction:column}
+  .menu-left{padding:80px 28px 60px;width:100%}
+  .hero-name{font-size:clamp(56px,16vw,120px)}
+  .split-section{grid-template-columns:1fr}
+  .split-cell{border-right:none;padding:56px 28px}
+  .portfolio-grid{grid-template-columns:1fr 1fr}
+  .service-row{grid-template-columns:36px 1fr;gap:12px}
+  .svc-desc,.svc-cta{display:none}
+  .partners-grid{grid-template-columns:repeat(2,1fr)}
+  .process-steps{grid-template-columns:1fr 1fr}
+  footer{padding:48px 28px 28px}
+  .footer-main{grid-template-columns:1fr 1fr}
+  .tagline-meta{flex-direction:column;gap:20px;align-items:flex-start}
+  .portfolio-head,.partners-heading-row{flex-direction:column;gap:16px}
+  .portfolio-sub,.partners-sub{text-align:left;max-width:none}
+  .services-heading-row{flex-direction:column;gap:16px;align-items:flex-start}
 }
-
-@media(max-width:420px){
-  .work-grid{grid-template-columns:1fr}
-  .process-grid{grid-template-columns:1fr}
-  .stat-row{grid-template-columns:1fr 1fr}
+@media(max-width:480px){
+  .portfolio-grid{grid-template-columns:1fr}
+  .process-steps{grid-template-columns:1fr}
+  .partners-grid{grid-template-columns:1fr}
+  .footer-main{grid-template-columns:1fr}
+  .hero-bottom-row{flex-direction:column;gap:20px;align-items:flex-start}
+  .cta-big{font-size:clamp(44px,14vw,88px)}
 }
 </style>
 </head>
 <body>
 
-<!-- force top anchor -->
-<div id="page-top" aria-hidden="true" style="position:absolute;top:0;left:0;height:0;width:0;overflow:hidden"></div>
+<!-- SCROLL FIX -->
+<script>
+(function(){
+  var st=function(){try{window.scrollTo(0,0);document.documentElement.scrollTop=0;document.body.scrollTop=0;}catch(e){}};
+  st();
+  window.addEventListener('load',st,{once:true});
+  window.addEventListener('pageshow',st);
+  document.addEventListener('DOMContentLoaded',st,{once:true});
+  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(st);
+  [50,100,200,350].forEach(function(t){setTimeout(st,t)});
+})();
+</script>
 
-<!-- ── FLOATING NAV ── -->
-<nav class="site-nav" id="siteNav">
-  <a href="#top" class="nav-brand">Quiet Contrast</a>
-  <div class="nav-links">
-    <a href="#about" class="nav-link">About</a>
-    <a href="#services" class="nav-link">Services</a>
-    <a href="#work" class="nav-link">Work</a>
-    <a href="#contact" class="nav-link">Contact</a>
-    <a href="mailto:justin@quietcontrast.com" class="nav-cta">Book Now</a>
+<!-- CURSOR -->
+<div id="qc-cursor"></div>
+<div id="qc-cursor-ring"></div>
+
+<!-- MENU OVERLAY -->
+<div class="menu-overlay" id="menuOverlay">
+  <div class="menu-close-row">
+    <div class="menu-close-logo">quiet contrast</div>
+    <button class="menu-close-btn" onclick="closeMenu()">close ×</button>
   </div>
-  <div class="nav-hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Menu">
-    <span></span><span></span><span></span>
+  <div class="menu-left">
+    <nav class="menu-nav">
+      <a href="#services" class="menu-nav-link" onclick="closeMenu()">services <span class="arrow">↗</span></a>
+      <a href="#work" class="menu-nav-link" onclick="closeMenu()">work <span class="arrow">↗</span></a>
+      <a href="#process" class="menu-nav-link" onclick="closeMenu()">process <span class="arrow">↗</span></a>
+      <a href="#clients" class="menu-nav-link" onclick="closeMenu()">clients <span class="arrow">↗</span></a>
+      <a href="mailto:justin@quietcontrast.com" class="menu-nav-link">contact <span class="arrow">↗</span></a>
+    </nav>
+    <div class="menu-footer-row">
+      <a href="#">instagram</a>
+      <a href="#">behance</a>
+      <a href="#">linkedin</a>
+      <a href="#">dribbble</a>
+      <a href="mailto:justin@quietcontrast.com">email</a>
+    </div>
   </div>
-</nav>
-<div class="mobile-menu" id="mobileMenu">
-  <a href="#about" class="mobile-link" onclick="closeMenu()">About</a>
-  <a href="#services" class="mobile-link" onclick="closeMenu()">Services</a>
-  <a href="#work" class="mobile-link" onclick="closeMenu()">Work</a>
-  <a href="#contact" class="mobile-link" onclick="closeMenu()">Contact</a>
-  <a href="mailto:justin@quietcontrast.com" class="mobile-link" onclick="closeMenu()">Book Now →</a>
+  <div class="menu-right">
+    <div class="menu-img-cell" style="background:linear-gradient(160deg,#1a1a0a,#0d0d06)">
+      <div class="menu-img-inner"><div class="menu-img-geo">print</div></div>
+      <div class="menu-img-label">print design</div>
+    </div>
+    <div class="menu-img-cell" style="background:linear-gradient(160deg,#0a1a0a,#070d07)">
+      <div class="menu-img-inner"><div class="menu-img-geo">brand</div></div>
+      <div class="menu-img-label">brand identity</div>
+    </div>
+    <div class="menu-img-cell" style="background:linear-gradient(160deg,#0a0a1a,#07070d)">
+      <div class="menu-img-inner"><div class="menu-img-geo">email</div></div>
+      <div class="menu-img-label">email design</div>
+    </div>
+    <div class="menu-img-cell" style="background:linear-gradient(160deg,#1a0a0a,#0d0707)">
+      <div class="menu-img-inner"><div class="menu-img-geo">web</div></div>
+      <div class="menu-img-label">web design</div>
+    </div>
+    <div class="menu-img-cell" style="background:linear-gradient(160deg,#0a1414,#070d0d)">
+      <div class="menu-img-inner"><div class="menu-img-geo">edit</div></div>
+      <div class="menu-img-label">editorial</div>
+    </div>
+  </div>
 </div>
 
-<!-- ════════════════════
-  HERO
-════════════════════ -->
-<section class="poster-hero" id="top">
+<!-- NAV -->
+<nav class="mainnav" id="mainNav">
+  <a href="#top" class="nav-logo">quiet contrast</a>
+  <div class="nav-right">
+    <a href="mailto:justin@quietcontrast.com" class="nav-action">book now</a>
+    <button class="nav-menu-btn" onclick="openMenu()" aria-label="menu">
+      <span></span>
+      <span></span>
+    </button>
+  </div>
+</nav>
 
-  <div class="studio-name">QUIET CONTRAST</div>
-
-  <div class="pink-band">
-    <span class="pink-band-text">Southern California</span>
-    <span class="pink-band-text">Est. 2009</span>
+<!-- HERO -->
+<section class="hero" id="top">
+  <div class="hero-bg-type">QC</div>
+  <div class="hero-lines">
+    <div class="hero-line" style="top:33.33%"></div>
+    <div class="hero-line" style="top:66.66%"></div>
   </div>
 
-  <div class="bevel-block">
-    <div class="bevel-inner">
-      <div class="bevel-edge-l"></div>
-      <div class="bevel-edge-r"></div>
-      <div class="bevel-type">GRAPHIC DESIGN</div>
-    </div>
-  </div>
+  <div class="hero-top-meta">graphic design studio since 2009</div>
 
-  <div class="pink-sub-band">
-    <div class="pink-sub-text">Quiet Contrast Design Studio</div>
-  </div>
-
-  <!-- Dark zone — iridescent SVG fluid art, no photos -->
-  <div class="hero-dark">
-    <svg viewBox="0 0 900 500" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <defs>
-        <radialGradient id="g1" cx="35%" cy="45%" r="65%">
-          <stop offset="0%" stop-color="#ff80c0" stop-opacity=".9"/>
-          <stop offset="20%" stop-color="#a0e0ff" stop-opacity=".85"/>
-          <stop offset="45%" stop-color="#80ffb0" stop-opacity=".8"/>
-          <stop offset="65%" stop-color="#ffe070" stop-opacity=".8"/>
-          <stop offset="85%" stop-color="#c080ff" stop-opacity=".75"/>
-          <stop offset="100%" stop-color="#ff8060" stop-opacity=".7"/>
-        </radialGradient>
-        <radialGradient id="g2" cx="65%" cy="55%" r="60%">
-          <stop offset="0%" stop-color="#40ffee" stop-opacity=".8"/>
-          <stop offset="30%" stop-color="#ff40a0" stop-opacity=".75"/>
-          <stop offset="60%" stop-color="#80ff40" stop-opacity=".8"/>
-          <stop offset="80%" stop-color="#ff8040" stop-opacity=".7"/>
-          <stop offset="100%" stop-color="#4040ff" stop-opacity=".6"/>
-        </radialGradient>
-        <radialGradient id="vignette" cx="50%" cy="50%" r="70%">
-          <stop offset="0%" stop-color="transparent"/>
-          <stop offset="100%" stop-color="#0a0a0a" stop-opacity=".75"/>
-        </radialGradient>
-        <filter id="glow"><feGaussianBlur stdDeviation="2"/></filter>
-      </defs>
-      <rect width="900" height="500" fill="#1a1a18"/>
-      <!-- Main fluid ribbon 1 -->
-      <path d="M110 450 C150 410,140 360,185 320 C230 280,310 292,355 255
-               C400 218,415 168,448 138 C480 108,535 102,558 78
-               C582 52,578 24,600 12 L660 18
-               C695 32,705 62,682 95 C659 128,618 142,598 180
-               C578 218,590 262,568 300 C546 338,505 352,482 395
-               C459 438,472 478,450 496 L420 498
-               C385 492,365 462,325 452 C285 442,248 458,205 468
-               C170 476,132 468,110 450 Z"
-            fill="url(#g1)" opacity=".88"/>
-      <!-- Main fluid ribbon 2 -->
-      <path d="M195 488 C238 458,256 416,298 388 C340 360,392 365,435 340
-               C478 315,498 272,530 248 C562 224,600 218,630 193
-               C660 168,674 133,700 108 C726 83,756 73,772 48 L815 42
-               C840 46,856 64,850 92 C844 120,822 142,812 174
-               C802 206,808 244,792 278 C776 312,744 334,728 370
-               C712 406,718 448,698 478 C678 504,645 516,610 510
-               C566 500,546 472,506 466 C466 460,428 476,388 482
-               C350 488,308 506,260 500 C228 496,198 502,195 488 Z"
-            fill="url(#g2)" opacity=".78"/>
-      <!-- Shimmer highlights -->
-      <path d="M420 108 Q510 80,595 108 Q660 130,672 182"
-            fill="none" stroke="rgba(255,255,255,.4)" stroke-width="5" stroke-linecap="round" filter="url(#glow)"/>
-      <path d="M340 250 Q428 222,512 250 Q575 272,585 322"
-            fill="none" stroke="rgba(200,255,255,.35)" stroke-width="3.5" stroke-linecap="round" filter="url(#glow)"/>
-      <path d="M268 368 Q348 342,422 368 Q482 388,492 438"
-            fill="none" stroke="rgba(255,200,255,.3)" stroke-width="3" stroke-linecap="round" filter="url(#glow)"/>
-      <!-- Vignette -->
-      <rect width="900" height="500" fill="url(#vignette)"/>
-      <!-- Watermark text -->
-      <text x="450" y="488" font-family="'Barlow Condensed',sans-serif" font-size="10"
-            font-weight="700" letter-spacing="3" text-anchor="middle"
-            fill="rgba(255,255,255,.15)">QUIET CONTRAST — SOUTHERN CALIFORNIA — justin@quietcontrast.com</text>
-    </svg>
-  </div>
-
-  <!-- Info bar -->
-  <div class="info-bar">
-    <div class="info-cell">
-      <div class="ic-label">Location</div>
-      <div class="ic-value">Southern California</div>
-    </div>
-    <div class="info-cell">
-      <div class="ic-label">Email</div>
-      <div class="ic-value"><a href="mailto:justin@quietcontrast.com">justin@quietcontrast.com</a></div>
-    </div>
-    <div class="info-cell">
-      <div class="ic-label">Hours</div>
-      <div class="ic-value">Mon – Fri</div>
-    </div>
-    <div class="info-cell">
-      <div class="ic-label">Start</div>
-      <div class="ic-value"><a href="mailto:justin@quietcontrast.com">Book Now</a></div>
-    </div>
-    <div class="logo-cell">
-      <div class="logo-cell-big">QC</div>
-      <div class="logo-cell-small">Studio</div>
+  <div class="hero-content">
+    <h1 class="hero-name">
+      quiet<br>
+      <span class="lime">contrast</span>
+    </h1>
+    <div class="hero-bottom-row">
+      <div class="hero-subtitle">
+        based in southern california&nbsp;&nbsp;·&nbsp;&nbsp;print, email, brand &amp; web
+      </div>
+      <a href="mailto:justin@quietcontrast.com" class="hero-cta">book now</a>
     </div>
   </div>
 
-</section>
-
-<!-- ════════════════════
-  ABOUT
-════════════════════ -->
-<section class="section about-section" id="about">
-  <div class="section-pink-head">
-    <div class="sph-title">About the Studio</div>
-    <div class="sph-sub">Full-Service Design</div>
-  </div>
-  <div class="section-inner">
-    <div class="sec-eyebrow rv-up">Quiet Contrast Design Agency</div>
-    <h2 class="sec-heading rv-up">Graphic<br>Design<br>Studio</h2>
-    <div class="stat-row rv-up">
-      <div class="stat-cell">
-        <div class="stat-num">15+</div>
-        <div class="stat-label">Years in Design</div>
-      </div>
-      <div class="stat-cell">
-        <div class="stat-num">200+</div>
-        <div class="stat-label">Projects Done</div>
-      </div>
-      <div class="stat-cell">
-        <div class="stat-num">50+</div>
-        <div class="stat-label">Clients Served</div>
-      </div>
-      <div class="stat-cell">
-        <div class="stat-num">6wk</div>
-        <div class="stat-label">Avg. Turnaround</div>
-      </div>
-    </div>
-    <div class="about-two-col rv-up">
-      <div class="about-col">
-        <p class="about-body">Quiet Contrast is a full-service graphic design studio based in Southern California — crafting print, email, web, and brand identities for companies that demand precision and presence.</p>
-        <p class="about-body">Every project begins with a brief, not a guess. No templates. No filler. Just design that does something.</p>
-        <br/>
-        <a href="mailto:justin@quietcontrast.com" class="btn-blk">Start a Project</a>
-      </div>
-      <div class="about-col about-col-alt">
-        <p class="about-body">With over 15 years of experience and a portfolio spanning Tilly's, Brighton, Entrepreneur Magazine, and Burger King, we bring the same exacting standard to every project, regardless of size or industry.</p>
-        <p class="about-body">Based in Southern California. Available locally, nationally, and remotely.</p>
-        <br/>
-        <a href="mailto:justin@quietcontrast.com" class="btn-pink">Book a Discovery Call</a>
-      </div>
-    </div>
+  <div class="hero-scroll-hint">
+    <div class="hero-scroll-line"></div>
+    <span>scroll</span>
   </div>
 </section>
 
-<!-- ════════════════════
-  SERVICES
-════════════════════ -->
-<section class="section services-section" id="services">
-  <div class="section-pink-head">
-    <div class="sph-title">Services</div>
-    <div class="sph-sub">Six Disciplines — One Standard</div>
-  </div>
-  <div class="section-inner-wide">
-    <div class="svc-list rv-up">
-      <div class="svc-row">
-        <div class="svc-n">01</div>
-        <div class="svc-info">
-          <div class="svc-name">Large Scale Print Design</div>
-          <div class="svc-desc">Trade show displays, banners, vehicle wraps, building murals, and retail signage — engineered to own any physical space.</div>
-        </div>
-        <a href="mailto:justin@quietcontrast.com" class="svc-cta">Get a Quote</a>
-      </div>
-      <div class="svc-row">
-        <div class="svc-n">02</div>
-        <div class="svc-info">
-          <div class="svc-name">Email Campaign Design</div>
-          <div class="svc-desc">Campaigns, newsletters, and automated sequences — the discipline of print, the precision of digital.</div>
-        </div>
-        <a href="mailto:justin@quietcontrast.com" class="svc-cta">Get a Quote</a>
-      </div>
-      <div class="svc-row">
-        <div class="svc-n">03</div>
-        <div class="svc-info">
-          <div class="svc-name">Brand Identity</div>
-          <div class="svc-desc">Logos, visual systems, and brand guidelines — the full architecture your brand needs to show up consistently everywhere.</div>
-        </div>
-        <a href="mailto:justin@quietcontrast.com" class="svc-cta">Get a Quote</a>
-      </div>
-      <div class="svc-row">
-        <div class="svc-n">04</div>
-        <div class="svc-info">
-          <div class="svc-name">Website Design</div>
-          <div class="svc-desc">Brand-to-pixel execution from concept to handoff. Purposeful layouts built for performance and consistency.</div>
-        </div>
-        <a href="mailto:justin@quietcontrast.com" class="svc-cta">Get a Quote</a>
-      </div>
-      <div class="svc-row">
-        <div class="svc-n">05</div>
-        <div class="svc-info">
-          <div class="svc-name">Magazine &amp; Brochure Design</div>
-          <div class="svc-desc">Editorial layouts, product catalogues, and marketing collateral with typographic precision.</div>
-        </div>
-        <a href="mailto:justin@quietcontrast.com" class="svc-cta">Get a Quote</a>
-      </div>
-      <div class="svc-row">
-        <div class="svc-n">06</div>
-        <div class="svc-info">
-          <div class="svc-name">All Graphic Design Needs</div>
-          <div class="svc-desc">Packaging, social assets, OOH, illustrations — if it's visual and your brand requires it, we build it.</div>
-        </div>
-        <a href="mailto:justin@quietcontrast.com" class="svc-cta">Get a Quote</a>
-      </div>
-    </div>
+<!-- TAGLINE -->
+<section class="tagline-section rv">
+  <p class="tagline-text">
+    <span class="accent">Redefining</span> what precision design
+    looks like. Building brands,
+    <span class="italic">fighting for attention,</span>
+    delivering work that lasts.
+  </p>
+  <div class="tagline-meta">
+    <span class="tagline-meta-label">based in southern california · est. 2009</span>
+    <a href="#work" class="tagline-meta-link">view work →</a>
   </div>
 </section>
 
-<!-- ════════════════════
-  WORK
-════════════════════ -->
-<section class="section work-section" id="work">
-  <div class="section-pink-head" style="background:var(--cream2)">
-    <div class="sph-title">Selected Work</div>
-    <div class="sph-sub">Clients &amp; Projects</div>
+<!-- HORIZONTAL SCROLL STRIP -->
+<div class="strip-section">
+  <div class="strip-head">
+    <span>selected moments</span>
+    <span>scroll →</span>
   </div>
-  <div class="section-inner">
-    <h2 class="sec-heading rv-up">Our Work</h2>
-    <div class="work-grid rv-up">
-      <div class="wc"><div class="wc-n">01</div><div class="wc-name">Tilly's Life Center</div><div class="wc-type">Print · Event Design</div></div>
-      <div class="wc"><div class="wc-n">02</div><div class="wc-name">Etherwercs</div><div class="wc-type">Brand Identity · OOH</div></div>
-      <div class="wc"><div class="wc-n">03</div><div class="wc-name">Entrepreneur Mag</div><div class="wc-type">Editorial · Print</div></div>
-      <div class="wc"><div class="wc-n">04</div><div class="wc-name">Brighton</div><div class="wc-type">Identity · Retail</div></div>
-      <div class="wc"><div class="wc-n">05</div><div class="wc-name">Burger King</div><div class="wc-type">Large Format · Print</div></div>
-      <div class="wc"><div class="wc-n">06</div><div class="wc-name">Tilly's</div><div class="wc-type">Email · Retail</div></div>
-      <div class="wc"><div class="wc-n">07</div><div class="wc-name">Felina</div><div class="wc-type">Web · Brand Identity</div></div>
-      <div class="wc"><div class="wc-n">08</div><div class="wc-name">Toal Engineering</div><div class="wc-type">Identity · Collateral</div></div>
-      <div class="wc"><div class="wc-n">09</div><div class="wc-name">Ranch House Doors</div><div class="wc-type">Email · Brand</div></div>
-      <div class="wc"><div class="wc-n">10</div><div class="wc-name">Direct Edge</div><div class="wc-type">Finance · Brand</div></div>
-    </div>
-  </div>
-</section>
-
-<!-- ════════════════════
-  PROCESS
-════════════════════ -->
-<section class="section process-section">
-  <div class="section-pink-head">
-    <div class="sph-title">The Process</div>
-    <div class="sph-sub">Four Steps — Zero Guesswork</div>
-  </div>
-  <div class="process-grid rv-up">
-    <div class="pc"><div class="pc-n">01</div><div class="pc-label">Step One</div><div class="pc-title">Discovery</div><p class="pc-body">We understand your goals, audience, and position. Every project begins with a brief — not a guess.</p></div>
-    <div class="pc"><div class="pc-n">02</div><div class="pc-label">Step Two</div><div class="pc-title">Strategy</div><p class="pc-body">Visual direction, scope, and timeline locked in from the start. Clear expectations, no surprises.</p></div>
-    <div class="pc"><div class="pc-n">03</div><div class="pc-label">Step Three</div><div class="pc-title">Design</div><p class="pc-body">We iterate until every element earns its place. No filler. Work that looks exactly like it should.</p></div>
-    <div class="pc"><div class="pc-n">04</div><div class="pc-label">Step Four</div><div class="pc-title">Delivery</div><p class="pc-body">Production-ready files, packaged and ready to launch, print, or publish — immediately.</p></div>
-  </div>
-</section>
-
-<!-- ════════════════════
-  CONTACT
-════════════════════ -->
-<section class="section contact-section" id="contact">
-  <div class="contact-bevel-block">
-    <div class="contact-bevel-inner">
-      <div class="contact-bevel-type">Let's Build Something</div>
-    </div>
-  </div>
-  <div class="pink-sub-band">
-    <div class="pink-sub-text">Start a Project with Quiet Contrast</div>
-  </div>
-  <div class="section-inner">
-    <div class="contact-grid rv-up">
-      <div class="contact-col">
-        <div class="ci-label" style="font-family:var(--display);font-size:10px;font-weight:700;letter-spacing:.24em;text-transform:uppercase;color:rgba(0,0,0,.35);margin-bottom:12px">Get in Touch</div>
-        <p class="about-body">Send a brief and we'll respond within one business day. Based in Southern California, available locally, nationally, and remotely.</p>
-        <br/>
-        <a href="mailto:justin@quietcontrast.com" class="contact-email">justin@quietcontrast.com</a>
-        <a href="mailto:justin@quietcontrast.com" class="btn-blk">Book Now</a>
+  <div class="strip-track">
+    <div class="strip-card">
+      <div class="strip-card-img scard-1">
+        <div class="strip-card-geo">TLC</div>
       </div>
-      <div class="contact-col contact-col-alt">
-        <div class="ci-list">
-          <div class="ci-row"><div class="ci-label">Studio</div><div class="ci-val">Quiet Contrast Design Agency</div></div>
-          <div class="ci-row"><div class="ci-label">Location</div><div class="ci-val">Based in Southern California</div></div>
-          <div class="ci-row"><div class="ci-label">Availability</div><div class="ci-val">Local, National &amp; Remote</div></div>
-          <div class="ci-row"><div class="ci-label">Email</div><div class="ci-val"><a href="mailto:justin@quietcontrast.com">justin@quietcontrast.com</a></div></div>
-          <div class="ci-row"><div class="ci-label">Response</div><div class="ci-val">Within 1 Business Day</div></div>
-          <div class="ci-row"><div class="ci-label">Established</div><div class="ci-val">Est. 2009</div></div>
-        </div>
+      <div class="strip-card-caption">
+        <div class="strip-card-location">Irvine, California</div>
+        <div class="strip-card-title">Tilly's Life Center — Gala Campaign Series</div>
+      </div>
+    </div>
+    <div class="strip-card">
+      <div class="strip-card-img scard-2">
+        <div class="strip-card-geo">ENT</div>
+      </div>
+      <div class="strip-card-caption">
+        <div class="strip-card-location">National Publication</div>
+        <div class="strip-card-title">Entrepreneur Magazine — Cover &amp; Layout Direction</div>
+      </div>
+    </div>
+    <div class="strip-card">
+      <div class="strip-card-img scard-3">
+        <div class="strip-card-geo">EW</div>
+      </div>
+      <div class="strip-card-caption">
+        <div class="strip-card-location">Out-of-Home · National</div>
+        <div class="strip-card-title">Etherwercs — Brand Identity &amp; OOH Campaign</div>
+      </div>
+    </div>
+    <div class="strip-card">
+      <div class="strip-card-img scard-4">
+        <div class="strip-card-geo">BRI</div>
+      </div>
+      <div class="strip-card-caption">
+        <div class="strip-card-location">Retail · National Locations</div>
+        <div class="strip-card-title">Brighton — Visual Identity &amp; Retail Collateral</div>
+      </div>
+    </div>
+    <div class="strip-card">
+      <div class="strip-card-img scard-5">
+        <div class="strip-card-geo">BK</div>
+      </div>
+      <div class="strip-card-caption">
+        <div class="strip-card-location">QSR · Large Format</div>
+        <div class="strip-card-title">Burger King — In-Store &amp; Campaign Print</div>
+      </div>
+    </div>
+    <div class="strip-card">
+      <div class="strip-card-img scard-6">
+        <div class="strip-card-geo">FEL</div>
+      </div>
+      <div class="strip-card-caption">
+        <div class="strip-card-location">E-Commerce · Apparel</div>
+        <div class="strip-card-title">Felina — Website Design &amp; Digital Brand</div>
+      </div>
+    </div>
+    <div class="strip-card">
+      <div class="strip-card-img scard-7">
+        <div class="strip-card-geo">TEG</div>
+      </div>
+      <div class="strip-card-caption">
+        <div class="strip-card-location">Engineering · Identity</div>
+        <div class="strip-card-title">Toal Engineering — Corporate Identity</div>
+      </div>
+    </div>
+    <div class="strip-card">
+      <div class="strip-card-img scard-8">
+        <div class="strip-card-geo">TL</div>
+      </div>
+      <div class="strip-card-caption">
+        <div class="strip-card-location">Retail · Email</div>
+        <div class="strip-card-title">Tilly's — Seasonal Email Campaigns</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SPLIT SECTION -->
+<div class="split-section rv">
+  <div class="split-cell">
+    <h2 class="split-heading">PRINT<br>&amp; WEB</h2>
+    <p class="split-body">Large-scale print, vehicle wraps, billboards, murals, and website design that translate your brand identity into physical and digital performance.</p>
+    <a href="mailto:justin@quietcontrast.com" class="split-link">start a project →</a>
+    <div class="split-num">01</div>
+  </div>
+  <div class="split-cell">
+    <h2 class="split-heading">BRAND<br>&amp; EMAIL</h2>
+    <p class="split-body">Brand identity systems and email campaigns built with the discipline of print. Logos, visual systems, guidelines, and campaigns that make you impossible to ignore.</p>
+    <a href="mailto:justin@quietcontrast.com" class="split-link">start a project →</a>
+    <div class="split-num">02</div>
+  </div>
+</div>
+
+<!-- PORTFOLIO / WORK -->
+<section class="portfolio-section rv" id="work">
+  <div class="portfolio-head">
+    <h2 class="portfolio-heading">portfolio<br>&amp; work</h2>
+    <p class="portfolio-sub">selected projects spanning print, identity, digital, and editorial. precision in every medium.</p>
+  </div>
+  <div class="portfolio-grid">
+    <div class="portfolio-card">
+      <div class="portfolio-card-img pg-1">
+        <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--display);font-size:clamp(24px,5vw,64px);font-weight:900;color:rgba(255,255,255,.04);letter-spacing:-.04em">TLC</div>
+      </div>
+      <div class="portfolio-card-year">2022–24</div>
+      <div class="portfolio-card-body">
+        <div class="portfolio-card-cat">print · event design</div>
+        <div class="portfolio-card-name">tilly's life center gala series</div>
+      </div>
+    </div>
+    <div class="portfolio-card">
+      <div class="portfolio-card-img pg-2">
+        <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--display);font-size:clamp(24px,5vw,64px);font-weight:900;color:rgba(255,255,255,.04);letter-spacing:-.04em">EW</div>
+      </div>
+      <div class="portfolio-card-year">2024</div>
+      <div class="portfolio-card-body">
+        <div class="portfolio-card-cat">brand identity · ooh</div>
+        <div class="portfolio-card-name">etherwercs brand & campaign</div>
+      </div>
+    </div>
+    <div class="portfolio-card">
+      <div class="portfolio-card-img pg-3">
+        <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--display);font-size:clamp(24px,5vw,64px);font-weight:900;color:rgba(255,255,255,.04);letter-spacing:-.04em">ENT</div>
+      </div>
+      <div class="portfolio-card-year">2023–24</div>
+      <div class="portfolio-card-body">
+        <div class="portfolio-card-cat">editorial · print</div>
+        <div class="portfolio-card-name">entrepreneur magazine</div>
+      </div>
+    </div>
+    <div class="portfolio-card">
+      <div class="portfolio-card-img pg-4">
+        <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--display);font-size:clamp(24px,5vw,64px);font-weight:900;color:rgba(255,255,255,.04);letter-spacing:-.04em">BRI</div>
+      </div>
+      <div class="portfolio-card-year">2024</div>
+      <div class="portfolio-card-body">
+        <div class="portfolio-card-cat">identity · retail</div>
+        <div class="portfolio-card-name">brighton visual identity</div>
+      </div>
+    </div>
+    <div class="portfolio-card">
+      <div class="portfolio-card-img pg-5">
+        <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--display);font-size:clamp(24px,5vw,64px);font-weight:900;color:rgba(255,255,255,.04);letter-spacing:-.04em">BK</div>
+      </div>
+      <div class="portfolio-card-year">2023</div>
+      <div class="portfolio-card-body">
+        <div class="portfolio-card-cat">large format · print</div>
+        <div class="portfolio-card-name">burger king campaign</div>
+      </div>
+    </div>
+    <div class="portfolio-card">
+      <div class="portfolio-card-img pg-6">
+        <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--display);font-size:clamp(24px,5vw,64px);font-weight:900;color:rgba(255,255,255,.04);letter-spacing:-.04em">FEL</div>
+      </div>
+      <div class="portfolio-card-year">2024</div>
+      <div class="portfolio-card-body">
+        <div class="portfolio-card-cat">web · e-commerce</div>
+        <div class="portfolio-card-name">felina website & brand</div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ════════════════════
-  FOOTER
-════════════════════ -->
+<!-- SERVICES -->
+<section class="services-section rv" id="services">
+  <div class="services-heading-row">
+    <h2 class="services-title">services<br>&amp; disciplines</h2>
+    <p style="font-size:13px;font-weight:300;color:var(--muted);max-width:260px;text-align:right;line-height:1.7">six disciplines, one standard. every project held to the same level of precision.</p>
+  </div>
+  <div class="services-list">
+    <div class="service-row">
+      <div class="svc-n">01</div>
+      <div class="svc-name">large scale print</div>
+      <div class="svc-desc">trade show displays, banners, vehicle wraps, building murals, retail signage. engineered to own any physical space.</div>
+      <a href="mailto:justin@quietcontrast.com" class="svc-cta">enquire →</a>
+    </div>
+    <div class="service-row">
+      <div class="svc-n">02</div>
+      <div class="svc-name">email design</div>
+      <div class="svc-desc">campaigns, newsletters, automated sequences — the discipline of print, the precision of digital. tested across all major clients.</div>
+      <a href="mailto:justin@quietcontrast.com" class="svc-cta">enquire →</a>
+    </div>
+    <div class="service-row">
+      <div class="svc-n">03</div>
+      <div class="svc-name">brand identity</div>
+      <div class="svc-desc">logo, visual system, brand guidelines. the full architecture your brand needs to show up consistently everywhere.</div>
+      <a href="mailto:justin@quietcontrast.com" class="svc-cta">enquire →</a>
+    </div>
+    <div class="service-row">
+      <div class="svc-n">04</div>
+      <div class="svc-name">website design</div>
+      <div class="svc-desc">brand-to-pixel from concept to handoff. clean, purposeful layouts built for performance and brand consistency.</div>
+      <a href="mailto:justin@quietcontrast.com" class="svc-cta">enquire →</a>
+    </div>
+    <div class="service-row">
+      <div class="svc-n">05</div>
+      <div class="svc-name">magazine &amp; brochure</div>
+      <div class="svc-desc">editorial layouts, catalogues, and collateral with typographic precision. for brands like entrepreneur magazine.</div>
+      <a href="mailto:justin@quietcontrast.com" class="svc-cta">enquire →</a>
+    </div>
+    <div class="service-row">
+      <div class="svc-n">06</div>
+      <div class="svc-name">all design needs</div>
+      <div class="svc-desc">packaging, social assets, ooh, illustrations. if it's visual and your brand requires it, we build it. same standard, always.</div>
+      <a href="mailto:justin@quietcontrast.com" class="svc-cta">enquire →</a>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section class="process-section rv" id="process">
+  <h2 class="process-heading">how<br>it works</h2>
+  <div class="process-steps">
+    <div class="process-card">
+      <div class="pc-num">01 · discovery</div>
+      <div class="pc-title">understanding you</div>
+      <p class="pc-body">goals, audience, and competitive position. every project begins with a brief — not a guess. we ask the questions that uncover what actually needs to be designed.</p>
+    </div>
+    <div class="process-card">
+      <div class="pc-num">02 · strategy</div>
+      <div class="pc-title">before a pixel moves</div>
+      <p class="pc-body">visual direction, scope, and timeline locked in from the start. clear expectations in both directions, so nothing surprises anyone at delivery.</p>
+    </div>
+    <div class="process-card">
+      <div class="pc-num">03 · design</div>
+      <div class="pc-title">precision refined</div>
+      <p class="pc-body">we iterate until every detail is locked and every element earns its place. no filler, no wasted space. work that looks exactly like it should.</p>
+    </div>
+    <div class="process-card">
+      <div class="pc-num">04 · delivery</div>
+      <div class="pc-title">production-ready</div>
+      <p class="pc-body">files packaged and ready to launch, print, or publish — immediately, without a follow-up email asking where everything is.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PARTNERS / CLIENTS -->
+<section class="partners-section rv" id="clients">
+  <div class="partners-heading-row">
+    <h2 class="partners-title">clients<br>&amp; partners</h2>
+    <p class="partners-sub">brands who share a passion for precision. from national retail to independent studios.</p>
+  </div>
+  <div class="partners-grid">
+    <div class="partner-cell">
+      <div class="partner-cell-name">Entrepreneur</div>
+      <div class="partner-cell-type">magazine · editorial</div>
+    </div>
+    <div class="partner-cell">
+      <div class="partner-cell-name">Tilly's</div>
+      <div class="partner-cell-type">retail · email</div>
+    </div>
+    <div class="partner-cell">
+      <div class="partner-cell-name">Brighton</div>
+      <div class="partner-cell-type">retail · identity</div>
+    </div>
+    <div class="partner-cell">
+      <div class="partner-cell-name">Burger King</div>
+      <div class="partner-cell-type">qsr · large format</div>
+    </div>
+    <div class="partner-cell">
+      <div class="partner-cell-name">Tilly's Life Center</div>
+      <div class="partner-cell-type">nonprofit · print</div>
+    </div>
+    <div class="partner-cell">
+      <div class="partner-cell-name">Felina</div>
+      <div class="partner-cell-type">apparel · web · brand</div>
+    </div>
+    <div class="partner-cell">
+      <div class="partner-cell-name">Etherwercs</div>
+      <div class="partner-cell-type">brand identity · ooh</div>
+    </div>
+    <div class="partner-cell">
+      <div class="partner-cell-name">Toal Engineering</div>
+      <div class="partner-cell-type">engineering · identity</div>
+    </div>
+    <div class="partner-cell">
+      <div class="partner-cell-name">Ranch House Doors</div>
+      <div class="partner-cell-type">email · brochure</div>
+    </div>
+    <div class="partner-cell">
+      <div class="partner-cell-name">Direct Edge</div>
+      <div class="partner-cell-type">finance · brand</div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA BAND -->
+<div class="cta-section rv">
+  <h2 class="cta-big">let's build<br>something<br><span class="lime">worth looking at.</span></h2>
+  <p class="cta-sub">send a brief and we'll get back within one business day. based in southern california — available locally, nationally, and remotely.</p>
+  <div class="cta-actions">
+    <a href="mailto:justin@quietcontrast.com" class="btn-lime">book now</a>
+    <a href="mailto:justin@quietcontrast.com" class="btn-outline">get a quote</a>
+  </div>
+</div>
+
+<!-- FOOTER -->
 <footer>
-  <div class="footer-pink-band">
-    <div class="fpb-text">Quiet Contrast Design Studio — Southern California — Est. 2009</div>
-  </div>
-  <div class="footer-info">
-    <div class="footer-cell">
-      <div class="fc-lbl">Email</div>
-      <div class="fc-val"><a href="mailto:justin@quietcontrast.com">justin@quietcontrast.com</a></div>
+  <div class="footer-main">
+    <div>
+      <div class="footer-brand">quiet<br><span>contrast</span></div>
+      <div class="footer-tagline">graphic design studio · southern california · est. 2009</div>
+      <p class="footer-about">full-service graphic design for brands that demand precision. print, email, web, and identity work built to last.</p>
+      <a href="mailto:justin@quietcontrast.com" class="footer-email">justin@quietcontrast.com</a>
     </div>
-    <div class="footer-cell">
-      <div class="fc-lbl">Location</div>
-      <div class="fc-val">Southern California</div>
+    <div>
+      <div class="footer-col-head">services</div>
+      <ul class="footer-links">
+        <li><a href="mailto:justin@quietcontrast.com">large scale print</a></li>
+        <li><a href="mailto:justin@quietcontrast.com">email design</a></li>
+        <li><a href="mailto:justin@quietcontrast.com">brand identity</a></li>
+        <li><a href="mailto:justin@quietcontrast.com">website design</a></li>
+        <li><a href="mailto:justin@quietcontrast.com">magazine & brochure</a></li>
+        <li><a href="mailto:justin@quietcontrast.com">all services</a></li>
+      </ul>
     </div>
-    <div class="footer-cell">
-      <div class="fc-lbl">Start a Project</div>
-      <div class="fc-val"><a href="mailto:justin@quietcontrast.com">Get a Quote</a></div>
+    <div>
+      <div class="footer-col-head">work</div>
+      <ul class="footer-links">
+        <li><a href="mailto:justin@quietcontrast.com">tilly's life center</a></li>
+        <li><a href="mailto:justin@quietcontrast.com">etherwercs</a></li>
+        <li><a href="mailto:justin@quietcontrast.com">entrepreneur</a></li>
+        <li><a href="mailto:justin@quietcontrast.com">brighton</a></li>
+        <li><a href="mailto:justin@quietcontrast.com">burger king</a></li>
+        <li><a href="mailto:justin@quietcontrast.com">all clients</a></li>
+      </ul>
     </div>
-    <div class="footer-cell">
-      <div class="fc-lbl">Connect</div>
-      <div class="fc-val"><a href="#">Instagram</a></div>
-    </div>
-    <div class="footer-logo-box">
-      <div class="flb-main">QC</div>
-      <div class="flb-sub">Quiet Contrast</div>
+    <div>
+      <div class="footer-col-head">studio</div>
+      <ul class="footer-links">
+        <li><a href="mailto:justin@quietcontrast.com">book now</a></li>
+        <li><a href="mailto:justin@quietcontrast.com">get a quote</a></li>
+        <li><a href="mailto:justin@quietcontrast.com">design club</a></li>
+        <li><a href="#process">process</a></li>
+        <li><a href="mailto:justin@quietcontrast.com">contact</a></li>
+      </ul>
     </div>
   </div>
   <div class="footer-bottom">
-    <div class="footer-copy">© Quiet Contrast 2026 · All Rights Reserved</div>
+    <div class="footer-copy">© quiet contrast 2026 · all rights reserved · southern california</div>
     <div class="footer-socials">
-      <a href="#" class="fsoc">Instagram</a>
-      <a href="#" class="fsoc">Behance</a>
-      <a href="#" class="fsoc">LinkedIn</a>
-      <a href="#" class="fsoc">Dribbble</a>
+      <a href="#">instagram</a>
+      <a href="#">behance</a>
+      <a href="#">linkedin</a>
+      <a href="#">dribbble</a>
     </div>
   </div>
 </footer>
 
 <script>
-// ── NAV: show after scrolling past 80% of viewport height ──
-// Uses scroll event (not IntersectionObserver) to avoid Safari reflow bug
-var nav = document.getElementById('siteNav');
-var threshold = Math.max(window.innerHeight * 0.7, 200);
-var ticking = false;
+// ── CURSOR ──
+var cur = document.getElementById('qc-cursor');
+var ring = document.getElementById('qc-cursor-ring');
+var mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',function(e){
+  mx=e.clientX;my=e.clientY;
+  cur.style.left=mx+'px';cur.style.top=my+'px';
+});
+(function animRing(){
+  rx+=(mx-rx)*.13;ry+=(my-ry)*.13;
+  ring.style.left=rx+'px';ring.style.top=ry+'px';
+  requestAnimationFrame(animRing);
+})();
 
-function onScroll() {
-  if (!ticking) {
-    requestAnimationFrame(function() {
-      if (window.scrollY > threshold) {
-        nav.classList.add('nav-show');
-      } else {
-        nav.classList.remove('nav-show');
-      }
-      ticking = false;
-    });
-    ticking = true;
-  }
+// ── MENU ──
+var menuOpen=false;
+function openMenu(){
+  menuOpen=true;
+  document.getElementById('menuOverlay').classList.add('open');
+  document.body.style.overflow='hidden';
 }
-window.addEventListener('scroll', onScroll, { passive: true });
-
-// ── MOBILE MENU ──
-var menuOpen = false;
-function toggleMenu() {
-  menuOpen = !menuOpen;
-  var m = document.getElementById('mobileMenu');
-  if (menuOpen) { m.style.display = 'flex'; requestAnimationFrame(function(){ m.classList.add('open'); }); }
-  else { m.classList.remove('open'); setTimeout(function(){ m.style.display = 'none'; }, 260); }
-}
-function closeMenu() {
-  menuOpen = false;
-  var m = document.getElementById('mobileMenu');
-  m.classList.remove('open');
-  setTimeout(function(){ m.style.display = 'none'; }, 260);
+function closeMenu(){
+  menuOpen=false;
+  document.getElementById('menuOverlay').classList.remove('open');
+  document.body.style.overflow='';
 }
 
-// ── REVEAL ON SCROLL (IntersectionObserver — read-only, no layout change) ──
-// Elements start opacity:0 only after DOM ready to avoid FOUC in Safari
-document.addEventListener('DOMContentLoaded', function() {
-  var els = document.querySelectorAll('.rv, .rv-up');
-  // Small delay ensures Safari has painted before we start observing
-  setTimeout(function() {
-    var io = new IntersectionObserver(function(entries) {
-      entries.forEach(function(e) {
-        if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+// ── SCROLL REVEAL ──
+document.addEventListener('DOMContentLoaded',function(){
+  setTimeout(function(){
+    var io=new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}
       });
-    }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
-    els.forEach(function(el) { io.observe(el); });
-  }, 100);
+    },{threshold:0.07,rootMargin:'0px 0px -40px 0px'});
+    document.querySelectorAll('.rv').forEach(function(el){io.observe(el)});
+  },150);
 });
 
-// ── STAGGER CHILDREN (work grid, process grid, services) ──
-document.addEventListener('DOMContentLoaded', function() {
-  var grids = document.querySelectorAll('.work-grid, .process-grid, .svc-list, .stat-row');
-  setTimeout(function() {
-    var gObs = new IntersectionObserver(function(entries) {
-      entries.forEach(function(e) {
-        if (e.isIntersecting) {
-          var kids = Array.from(e.target.children);
-          kids.forEach(function(c, i) {
-            c.style.opacity = '0';
-            setTimeout(function() {
-              c.style.transition = 'opacity .45s ease';
-              c.style.opacity = '1';
-            }, i * 55);
+// ── STAGGER GRIDS ──
+document.addEventListener('DOMContentLoaded',function(){
+  setTimeout(function(){
+    var gObs=new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){
+          Array.from(e.target.children).forEach(function(c,i){
+            c.style.opacity='0';
+            setTimeout(function(){
+              c.style.transition='opacity .5s ease,transform .5s ease';
+              c.style.transform='translateY(12px)';
+              setTimeout(function(){c.style.opacity='1';c.style.transform='none';},i*55);
+            },10);
           });
           gObs.unobserve(e.target);
         }
       });
-    }, { threshold: 0.05 });
-    grids.forEach(function(g) { gObs.observe(g); });
-  }, 120);
+    },{threshold:0.04});
+    document.querySelectorAll('.portfolio-grid,.partners-grid,.process-steps').forEach(function(g){gObs.observe(g)});
+  },160);
 });
 
-// ── SMOOTH SCROLL (manual, not CSS scroll-behavior to avoid Safari jump) ──
-document.querySelectorAll('a[href^="#"]').forEach(function(a) {
-  a.addEventListener('click', function(e) {
-    var id = a.getAttribute('href');
-    if (id === '#') return;
-    var target = document.querySelector(id);
-    if (!target) return;
+// ── SMOOTH SCROLL ──
+document.querySelectorAll('a[href^="#"]').forEach(function(a){
+  a.addEventListener('click',function(e){
+    var id=a.getAttribute('href');
+    if(id==='#')return;
+    var t=document.querySelector(id);
+    if(!t)return;
     e.preventDefault();
-    var top = target.getBoundingClientRect().top + window.scrollY - 52;
-    window.scrollTo({ top: top, behavior: 'smooth' });
+    var top=t.getBoundingClientRect().top+window.scrollY-64;
+    window.scrollTo({top:top,behavior:'smooth'});
   });
 });
-
-// ── COMPREHENSIVE SCROLL TOP FIX ──
-// Covers: initial load, Safari bfcache, iOS Safari, and font-load reflow
-function forceTop() { window.scrollTo(0, 0); }
-
-// Immediate
-forceTop();
-
-// After DOM ready
-document.addEventListener('DOMContentLoaded', forceTop);
-
-// After full load (images, fonts)
-window.addEventListener('load', forceTop);
-
-// After fonts load (Google Fonts can cause reflow + scroll jump)
-if (document.fonts && document.fonts.ready) {
-  document.fonts.ready.then(forceTop);
-}
-
-// Safari bfcache (back/forward navigation restores scroll)
-window.addEventListener('pageshow', function(e) {
-  // e.persisted = true means loaded from bfcache
-  forceTop();
-});
-
-// Catch any delayed scroll restoration (some Safari versions do this at 100-300ms)
-setTimeout(forceTop, 50);
-setTimeout(forceTop, 150);
-setTimeout(forceTop, 300);
 </script>
 </body>
 </html>
