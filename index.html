@@ -2,849 +2,631 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
 <title>Quiet Contrast — Graphic Design Studio</title>
 
-<!-- QC favicon for Safari pin / bookmark -->
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23f2b8c6'/%3E%3Ctext x='16' y='23' font-family='Arial Black,sans-serif' font-size='14' font-weight='900' text-anchor='middle' fill='%230a0a0a'%3EQC%3C/text%3E%3C/svg%3E"/>
-<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' rx='0' fill='%23f2b8c6'/%3E%3Ctext x='90' y='128' font-family='Arial Black,sans-serif' font-size='96' font-weight='900' text-anchor='middle' fill='%230a0a0a'%3EQC%3C/text%3E%3C/svg%3E"/>
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' fill='%23f2b8c6'/%3E%3Ctext x='90' y='128' font-family='Arial Black,sans-serif' font-size='96' font-weight='900' text-anchor='middle' fill='%230a0a0a'%3EQC%3C/text%3E%3C/svg%3E"/>
 <meta name="apple-mobile-web-app-title" content="QC"/>
 <meta name="theme-color" content="#f2b8c6"/>
 
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,400;0,600;0,700;0,800;0,900;1,800;1,900&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,700;0,800;0,900;1,700;1,800;1,900&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet"/>
 
 <style>
+/* ── RESET ── */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-
 :root{
-  --cream: #f0ebe0;
-  --cream2: #e8e2d5;
-  --pink: #f2b8c6;
-  --pink-dark: #e8a0b4;
-  --black: #0a0a0a;
-  --near-black: #111111;
-  --dark-bg: #1a1a18;
-  --gray-mid: #666;
-  --chrome-light: #e8e8e4;
-  --chrome-dark: #8a8a88;
-  --chrome-mid: #c8c8c4;
-  --display: 'Barlow Condensed', sans-serif;
-  --body: 'Barlow', sans-serif;
+  --cream:#f0ebe0;
+  --cream2:#e8e2d5;
+  --pink:#f2b8c6;
+  --pink-dark:#e5a0b4;
+  --black:#0a0a0a;
+  --dark:#1a1a18;
+  --gray:#666;
+  --display:'Barlow Condensed',sans-serif;
+  --body:'Barlow',sans-serif;
 }
 
-html { scroll-behavior: smooth; }
+/* NO scroll-behavior on html — prevents Safari jump-to-bottom on load */
+html{background:var(--cream)}
 
-body {
-  font-family: var(--body);
-  background: var(--cream);
-  color: var(--black);
-  overflow-x: hidden;
-  -webkit-font-smoothing: antialiased;
-  font-size: 14px;
-}
-
-a { text-decoration: none; color: inherit; }
-button { cursor: pointer; font-family: inherit; border: none; }
-
-/* ─── POSTER GRAIN OVERLAY ─── */
-body::after {
-  content: '';
-  position: fixed; inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
-  pointer-events: none; z-index: 9999; opacity: 0.4;
+body{
+  font-family:var(--body);
+  background:var(--cream);
+  color:var(--black);
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+  /* prevent momentum scroll bounce causing jump */
+  overscroll-behavior:none;
 }
 
-/* ═══════════════════════════════════
-   SECTION 1 — HERO POSTER
-═══════════════════════════════════ */
-.poster-hero {
-  background: var(--cream);
-  padding: 28px 28px 0;
-  position: relative;
-  border-bottom: 3px solid var(--black);
+a{text-decoration:none;color:inherit}
+button{cursor:pointer;font-family:inherit;border:none;background:none}
+
+/* ── NAV ── */
+.site-nav{
+  position:fixed;top:0;left:0;right:0;z-index:900;
+  background:var(--pink);
+  border-bottom:2.5px solid var(--black);
+  display:flex;justify-content:space-between;align-items:center;
+  padding:0 20px;height:48px;
+  /* Start visible, no transform trick that causes Safari reflow */
+  opacity:0;
+  pointer-events:none;
+  transition:opacity .35s ease;
+}
+.site-nav.nav-show{opacity:1;pointer-events:all}
+.nav-brand{
+  font-family:var(--display);font-size:20px;font-weight:900;
+  letter-spacing:.04em;text-transform:uppercase;color:var(--black);
+}
+.nav-links{display:flex;gap:0;align-items:stretch}
+.nav-link{
+  font-family:var(--display);font-size:13px;font-weight:700;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--black);
+  padding:0 14px;height:48px;display:flex;align-items:center;
+  border-left:1.5px solid rgba(0,0,0,.18);
+  transition:background .2s;
+}
+.nav-link:hover{background:rgba(0,0,0,.06)}
+.nav-cta{
+  background:var(--black);color:var(--pink);
+  font-family:var(--display);font-size:13px;font-weight:700;
+  letter-spacing:.12em;text-transform:uppercase;
+  padding:0 18px;height:48px;display:flex;align-items:center;
+  border-left:2px solid var(--black);
+  transition:background .2s;
+}
+.nav-cta:hover{background:#222}
+.nav-hamburger{
+  display:none;flex-direction:column;gap:5px;cursor:pointer;
+  padding:8px;
+}
+.nav-hamburger span{
+  display:block;width:22px;height:2px;background:var(--black);
+  transition:transform .3s,opacity .3s;
+}
+.mobile-menu{
+  display:none;
+  position:fixed;top:48px;left:0;right:0;z-index:800;
+  background:var(--pink);
+  border-bottom:2.5px solid var(--black);
+  flex-direction:column;
+  opacity:0;pointer-events:none;
+  transition:opacity .25s;
+}
+.mobile-menu.open{opacity:1;pointer-events:all}
+.mobile-link{
+  font-family:var(--display);font-size:18px;font-weight:800;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--black);
+  padding:16px 24px;border-bottom:1.5px solid rgba(0,0,0,.12);
+  display:block;
+}
+.mobile-link:last-child{border-bottom:none;background:var(--black);color:var(--pink)}
+
+/* ── HERO / POSTER SECTION ── */
+.poster-hero{
+  background:var(--cream);
+  padding:24px 24px 0;
+  border-bottom:3px solid var(--black);
 }
 
-/* Studio name — top centered, large serif-like condensed */
-.studio-name-top {
-  text-align: center;
-  font-family: var(--display);
-  font-size: clamp(36px, 7vw, 96px);
-  font-weight: 900;
-  letter-spacing: .04em;
-  text-transform: uppercase;
-  color: var(--black);
-  line-height: 1;
-  margin-bottom: 0;
-  padding-bottom: 12px;
+/* Title row */
+.studio-name{
+  font-family:var(--display);
+  font-size:clamp(28px,7vw,88px);
+  font-weight:900;letter-spacing:.04em;text-transform:uppercase;
+  color:var(--black);text-align:center;line-height:1;
+  padding-bottom:10px;
 }
 
-/* Pink date/time band */
-.pink-band {
-  background: var(--pink);
-  margin: 0 -28px;
-  padding: 8px 32px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-top: 2.5px solid var(--black);
-  border-bottom: 2.5px solid var(--black);
+/* Pink band */
+.pink-band{
+  background:var(--pink);
+  margin:0 -24px;
+  padding:8px 24px;
+  display:flex;justify-content:space-between;align-items:center;
+  border-top:2.5px solid var(--black);
+  border-bottom:2.5px solid var(--black);
+  flex-wrap:wrap;gap:4px;
 }
-.pink-band-text {
-  font-family: var(--display);
-  font-size: clamp(16px, 2.5vw, 26px);
-  font-weight: 800;
-  letter-spacing: .12em;
-  text-transform: uppercase;
-  color: var(--black);
+.pink-band-text{
+  font-family:var(--display);
+  font-size:clamp(13px,2vw,22px);
+  font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--black);
 }
 
-/* 3D chrome bevel type block */
-.bevel-block {
-  position: relative;
-  margin: 0 -28px;
-  overflow: hidden;
-  border-bottom: 3px solid var(--black);
+/* 3D Chrome bevel block */
+.bevel-block{
+  margin:0 -24px;
+  overflow:hidden;
+  border-bottom:2.5px solid var(--black);
 }
-.bevel-inner {
-  /* The chrome/metallic receding frame */
-  background: linear-gradient(
-    180deg,
-    #d0cec8 0%,
-    #b8b6b0 8%,
-    #e4e2dc 16%,
-    #c0beba 24%,
-    #a8a6a2 32%,
-    #d8d6d0 40%,
-    #c4c2bc 48%,
-    #b0aea8 56%,
-    #d0cec8 64%,
-    #b8b6b0 72%,
-    #e0ded8 80%,
-    #c8c6c0 88%,
-    #a8a6a2 100%
-  );
-  padding: 16px 20px 20px;
-  position: relative;
+.bevel-inner{
+  background:linear-gradient(180deg,
+    #d0cec8 0%,#b8b6b0 8%,#e4e2dc 16%,
+    #c0beba 24%,#a8a6a2 32%,#d8d6d0 40%,
+    #c4c2bc 48%,#b0aea8 56%,#d0cec8 64%,
+    #b8b6b0 72%,#e0ded8 80%,#c8c6c0 88%,#a8a6a2 100%);
+  padding:12px 36px 16px;position:relative;overflow:hidden;
 }
-/* Left and right perspective bevel edges */
-.bevel-inner::before {
-  content: '';
-  position: absolute;
-  left: 0; top: 0; bottom: 0;
-  width: 24px;
-  background: linear-gradient(90deg, #888884 0%, #d0cec8 100%);
+.bevel-edge-l{
+  position:absolute;left:0;top:0;bottom:0;width:20px;
+  background:linear-gradient(90deg,#888884,#d0cec8);
 }
-.bevel-inner::after {
-  content: '';
-  position: absolute;
-  right: 0; top: 0; bottom: 0;
-  width: 24px;
-  background: linear-gradient(270deg, #888884 0%, #d0cec8 100%);
+.bevel-edge-r{
+  position:absolute;right:0;top:0;bottom:0;width:20px;
+  background:linear-gradient(270deg,#888884,#d0cec8);
+}
+.bevel-type{
+  font-family:var(--display);
+  font-size:clamp(48px,14vw,190px);
+  font-weight:900;font-style:italic;
+  text-transform:uppercase;
+  letter-spacing:-.02em;line-height:.88;
+  text-align:center;position:relative;z-index:2;
+  color:transparent;
+  background:linear-gradient(180deg,
+    #fff 0%,#d0cec8 10%,#686866 22%,
+    #c8c6c0 32%,#fff 42%,#a8a6a0 52%,
+    #606060 62%,#d8d6d0 72%,
+    #fff 82%,#8a8888 92%,#404040 100%);
+  -webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;
+  filter:drop-shadow(2px 4px 0 rgba(0,0,0,.45)) drop-shadow(4px 8px 0 rgba(0,0,0,.22));
 }
 
-/* The massive 3D italic condensed type */
-.bevel-type {
-  font-family: var(--display);
-  font-size: clamp(64px, 16vw, 220px);
-  font-weight: 900;
-  font-style: italic;
-  text-transform: uppercase;
-  letter-spacing: -.02em;
-  line-height: .88;
-  text-align: center;
-  position: relative;
-  z-index: 2;
-
-  /* 3D chrome text effect */
-  color: transparent;
-  background: linear-gradient(
-    180deg,
-    #ffffff 0%,
-    #d0cec8 10%,
-    #686866 22%,
-    #c8c6c0 32%,
-    #ffffff 42%,
-    #a8a6a0 52%,
-    #606060 62%,
-    #d8d6d0 72%,
-    #ffffff 82%,
-    #8a8888 92%,
-    #404040 100%
-  );
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-
-  /* Deep shadow for 3D depth */
-  filter: drop-shadow(3px 6px 0px rgba(0,0,0,0.5)) drop-shadow(6px 12px 0px rgba(0,0,0,0.25));
-  user-select: none;
+/* Pink subtitle band */
+.pink-sub-band{
+  background:var(--pink);
+  margin:0 -24px;
+  padding:9px 24px;
+  text-align:center;
+  border-top:2.5px solid var(--black);
+  border-bottom:2.5px solid var(--black);
+}
+.pink-sub-text{
+  font-family:var(--display);
+  font-size:clamp(12px,1.8vw,20px);
+  font-weight:700;letter-spacing:.28em;text-transform:uppercase;color:var(--black);
 }
 
-/* Pink subtitle band below bevel */
-.pink-subtitle-band {
-  background: var(--pink);
-  margin: 0 -28px;
-  padding: 10px 32px;
-  text-align: center;
-  border-top: 2.5px solid var(--black);
-  border-bottom: 2.5px solid var(--black);
+/* Dark zone with SVG art */
+.hero-dark{
+  margin:0 -24px;
+  background:var(--dark);
+  min-height:clamp(260px,48vh,620px);
+  position:relative;overflow:hidden;
+  display:flex;align-items:center;justify-content:center;
 }
-.pink-subtitle-text {
-  font-family: var(--display);
-  font-size: clamp(14px, 2vw, 22px);
-  font-weight: 700;
-  letter-spacing: .28em;
-  text-transform: uppercase;
-  color: var(--black);
-}
-
-/* Large dark image zone */
-.hero-dark-zone {
-  margin: 0 -28px;
-  background: var(--dark-bg);
-  min-height: clamp(320px, 55vh, 680px);
-  position: relative;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-/* Iridescent soap bubble / fluid shape SVG — no photo */
-.hero-dark-zone-inner {
-  width: 100%; height: 100%;
-  position: absolute; inset: 0;
-  display: flex; align-items: center; justify-content: center;
-}
-
-/* Iridescent fluid shapes via SVG + CSS */
-.fluid-shape {
-  position: absolute;
-  border-radius: 60% 40% 70% 30% / 30% 60% 40% 70%;
+.hero-dark svg{
+  position:absolute;inset:0;width:100%;height:100%;
+  display:block;
 }
 
 /* Bottom info bar */
-.hero-info-bar {
-  margin: 0 -28px;
-  background: var(--cream);
-  border-top: 2.5px solid var(--black);
-  display: grid;
-  grid-template-columns: auto 1fr auto auto auto;
-  align-items: stretch;
+.info-bar{
+  margin:0 -24px;
+  background:var(--cream);
+  border-top:2.5px solid var(--black);
+  display:flex;flex-wrap:wrap;
+  align-items:stretch;
 }
-.info-cell {
-  padding: 14px 20px;
-  border-right: 2px solid var(--black);
-  display: flex; align-items: center;
-  font-family: var(--display);
-  font-size: clamp(12px, 1.5vw, 17px);
-  font-weight: 700;
-  letter-spacing: .12em;
-  text-transform: uppercase;
-  color: var(--black);
-  gap: 8px;
+.info-cell{
+  flex:1;min-width:0;
+  padding:12px 16px;
+  border-right:2px solid var(--black);
+  display:flex;flex-direction:column;justify-content:center;
+  align-items:center;text-align:center;
 }
-.info-cell:last-child { border-right: none; }
-.info-cell a { color: var(--black); transition: color .2s; }
-.info-cell a:hover { color: var(--gray-mid); }
-/* Corner logo box */
-.logo-box {
-  border-left: 2px solid var(--black);
-  border-right: none;
-  padding: 8px 14px;
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  gap: 2px;
+.info-cell:last-child{border-right:none;min-width:64px;flex:0 0 auto}
+.ic-label{
+  font-family:var(--display);font-size:9px;font-weight:700;
+  letter-spacing:.2em;text-transform:uppercase;color:rgba(0,0,0,.35);
+  margin-bottom:3px;
 }
-.logo-box-main {
-  font-family: var(--display);
-  font-size: clamp(16px, 2.5vw, 28px);
-  font-weight: 900;
-  letter-spacing: -.01em;
-  line-height: 1;
-  color: var(--black);
+.ic-value{
+  font-family:var(--display);font-size:clamp(11px,1.6vw,16px);font-weight:800;
+  text-transform:uppercase;letter-spacing:.06em;color:var(--black);
 }
-.logo-box-sub {
-  font-family: var(--display);
-  font-size: clamp(8px, 1vw, 11px);
-  font-weight: 700;
-  letter-spacing: .14em;
-  text-transform: uppercase;
-  color: var(--black);
-  text-align: center;
-  border-top: 1.5px solid var(--black);
-  padding-top: 3px;
-  margin-top: 2px;
-  width: 100%;
+.ic-value a{color:var(--black)}
+.logo-cell{
+  border-left:2.5px solid var(--black);
+  padding:10px 14px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:2px;
+}
+.logo-cell-big{
+  font-family:var(--display);font-size:clamp(20px,3.5vw,32px);
+  font-weight:900;line-height:1;color:var(--black);
+}
+.logo-cell-small{
+  font-family:var(--display);font-size:clamp(7px,1vw,9px);
+  font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--black);text-align:center;
+  border-top:1.5px solid var(--black);padding-top:3px;
+  width:100%;
 }
 
-/* ═══════════════════════════════════
-   NAV — floating top bar
-═══════════════════════════════════ */
-.site-nav {
-  position: fixed; top: 0; left: 0; right: 0;
-  z-index: 500;
-  background: var(--pink);
-  border-bottom: 2px solid var(--black);
-  display: flex; justify-content: space-between; align-items: center;
-  padding: 0 24px;
-  height: 44px;
-  transform: translateY(-100%);
-  transition: transform .4s cubic-bezier(.25,.46,.45,.94);
+/* ── SHARED SECTION STYLES ── */
+.section{border-bottom:3px solid var(--black)}
+.section-pink-head{
+  background:var(--pink);
+  border-bottom:2.5px solid var(--black);
+  padding:10px 24px;
+  display:flex;justify-content:space-between;align-items:center;
+  flex-wrap:wrap;gap:4px;
 }
-.site-nav.visible { transform: translateY(0); }
-.nav-logo-text {
-  font-family: var(--display);
-  font-size: 20px; font-weight: 900;
-  letter-spacing: .04em; text-transform: uppercase;
-  color: var(--black);
+.sph-title{
+  font-family:var(--display);font-size:clamp(18px,3vw,34px);
+  font-weight:900;text-transform:uppercase;letter-spacing:.08em;color:var(--black);
 }
-.nav-links { display: flex; gap: 0; align-items: stretch; }
-.nav-link {
-  font-family: var(--display);
-  font-size: 13px; font-weight: 700;
-  letter-spacing: .12em; text-transform: uppercase;
-  color: var(--black);
-  padding: 0 16px; height: 44px;
-  display: flex; align-items: center;
-  border-left: 1.5px solid rgba(0,0,0,.2);
-  transition: background .2s;
-}
-.nav-link:hover { background: rgba(0,0,0,.07); }
-.nav-cta {
-  background: var(--black); color: var(--pink);
-  font-family: var(--display); font-size: 13px; font-weight: 700;
-  letter-spacing: .12em; text-transform: uppercase;
-  padding: 0 20px; height: 44px;
-  display: flex; align-items: center;
-  border-left: 2px solid var(--black);
-  transition: background .2s, color .2s;
-}
-.nav-cta:hover { background: var(--dark-bg); }
-
-/* ═══════════════════════════════════
-   SECTION 2 — ABOUT (cream)
-═══════════════════════════════════ */
-.about-section {
-  background: var(--cream);
-  padding: 80px 40px;
-  border-bottom: 3px solid var(--black);
-}
-.about-top-label {
-  font-family: var(--display);
-  font-size: 12px; font-weight: 700;
-  letter-spacing: .3em; text-transform: uppercase;
-  color: var(--gray-mid);
-  margin-bottom: 20px;
-  display: flex; align-items: center; gap: 12px;
-}
-.about-top-label::before {
-  content: ''; display: block;
-  width: 32px; height: 2px; background: var(--black);
-}
-.about-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0;
-  align-items: start;
-}
-.about-left { padding-right: 56px; border-right: 2.5px solid var(--black); }
-.about-right { padding-left: 56px; }
-
-.about-heading {
-  font-family: var(--display);
-  font-size: clamp(52px, 9vw, 130px);
-  font-weight: 900; font-style: italic;
-  text-transform: uppercase;
-  letter-spacing: -.02em; line-height: .86;
-  color: var(--black);
-  margin-bottom: 32px;
+.sph-sub{
+  font-family:var(--display);font-size:12px;font-weight:700;
+  letter-spacing:.22em;text-transform:uppercase;color:rgba(0,0,0,.45);
 }
 
-/* Chrome bevel text for headings on sections */
-.chrome-heading {
-  color: transparent;
-  background: linear-gradient(180deg,#111 0%,#555 30%,#111 52%,#444 70%,#111 100%);
-  -webkit-background-clip: text; background-clip: text;
-  -webkit-text-fill-color: transparent;
-  filter: drop-shadow(2px 3px 0 rgba(0,0,0,.3));
+.section-inner{padding:48px 24px;max-width:1100px;margin:0 auto}
+.section-inner-narrow{padding:48px 24px;max-width:800px;margin:0 auto}
+.section-inner-wide{padding:40px 24px}
+
+/* Section headings */
+.sec-heading{
+  font-family:var(--display);
+  font-size:clamp(52px,10vw,130px);
+  font-weight:900;font-style:italic;text-transform:uppercase;
+  letter-spacing:-.02em;line-height:.86;
+  color:var(--black);text-align:center;margin-bottom:32px;
+}
+.sec-eyebrow{
+  font-family:var(--display);font-size:11px;font-weight:700;
+  letter-spacing:.28em;text-transform:uppercase;color:var(--gray);
+  text-align:center;margin-bottom:14px;
+}
+.sec-body{
+  font-size:15px;font-weight:300;color:#444;
+  line-height:1.9;text-align:center;max-width:640px;
+  margin:0 auto 28px;
 }
 
-.about-body {
-  font-size: 14.5px; font-weight: 300;
-  color: #444; line-height: 1.9;
-  margin-bottom: 14px; max-width: 480px;
+/* ── ABOUT ── */
+.about-section{background:var(--cream)}
+.about-two-col{
+  display:grid;grid-template-columns:1fr 1fr;gap:2px;
+  background:var(--black);margin-bottom:40px;
 }
-.btn-black {
-  display: inline-block;
-  background: var(--black); color: var(--cream);
-  font-family: var(--display); font-size: 14px;
-  font-weight: 700; letter-spacing: .18em;
-  text-transform: uppercase;
-  padding: 14px 36px;
-  margin-top: 24px;
-  border: 2px solid var(--black);
-  transition: background .25s, color .25s;
+.about-col{
+  background:var(--cream);padding:36px 28px;
 }
-.btn-black:hover { background: transparent; color: var(--black); }
-.btn-pink {
-  display: inline-block;
-  background: var(--pink); color: var(--black);
-  font-family: var(--display); font-size: 14px;
-  font-weight: 700; letter-spacing: .18em;
-  text-transform: uppercase;
-  padding: 14px 36px;
-  border: 2px solid var(--black);
-  transition: background .25s;
+.about-col-dark{background:var(--cream2)}
+.about-col-pink{background:var(--pink)}
+.about-body{
+  font-size:14px;font-weight:300;color:#444;
+  line-height:1.9;margin-bottom:14px;
 }
-.btn-pink:hover { background: var(--pink-dark); }
-
-.about-stat-grid {
-  display: grid; grid-template-columns: 1fr 1fr; gap: 2px;
-  background: var(--black);
-  margin-bottom: 32px;
+.stat-row{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  gap:2px;background:var(--black);margin-bottom:32px;
 }
-.about-stat-cell {
-  background: var(--cream);
-  padding: 24px 20px;
+.stat-cell{
+  background:var(--cream);padding:24px 16px;text-align:center;
 }
-.about-stat-num {
-  font-family: var(--display);
-  font-size: clamp(40px, 6vw, 72px);
-  font-weight: 900; line-height: .9;
-  color: var(--black); margin-bottom: 6px;
+.stat-cell:nth-child(2){background:var(--pink)}
+.stat-cell:nth-child(3){background:var(--cream2)}
+.stat-num{
+  font-family:var(--display);font-size:clamp(36px,6vw,68px);
+  font-weight:900;line-height:.9;color:var(--black);margin-bottom:6px;
 }
-.about-stat-label {
-  font-family: var(--display);
-  font-size: 11px; font-weight: 700;
-  letter-spacing: .18em; text-transform: uppercase;
-  color: var(--gray-mid);
+.stat-label{
+  font-family:var(--display);font-size:10px;font-weight:700;
+  letter-spacing:.18em;text-transform:uppercase;color:var(--gray);
 }
 
-/* ═══════════════════════════════════
-   SECTION 3 — SERVICES (dark bg)
-═══════════════════════════════════ */
-.services-section {
-  background: var(--dark-bg);
-  border-bottom: 3px solid var(--black);
+/* ── SERVICES ── */
+.services-section{background:var(--dark)}
+.svc-list{display:flex;flex-direction:column;gap:2px}
+.svc-row{
+  display:grid;grid-template-columns:44px 1fr auto;
+  align-items:center;gap:16px;padding:18px 20px;
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.06);
+  transition:background .25s;
+}
+.svc-row:hover{background:rgba(242,184,198,.09);border-color:rgba(242,184,198,.25)}
+.svc-row:hover .svc-name{color:var(--pink)}
+.svc-n{
+  font-family:var(--display);font-size:22px;font-weight:900;
+  color:rgba(255,255,255,.1);line-height:1;letter-spacing:-.02em;
+  text-align:center;
+}
+.svc-info{min-width:0}
+.svc-name{
+  font-family:var(--display);font-size:clamp(17px,2.5vw,26px);
+  font-weight:800;text-transform:uppercase;letter-spacing:.03em;
+  color:var(--cream);line-height:1.05;
+  transition:color .25s;margin-bottom:3px;
+}
+.svc-desc{
+  font-size:12px;font-weight:300;color:rgba(255,255,255,.4);line-height:1.6;
+}
+.svc-cta{
+  font-family:var(--display);font-size:11px;font-weight:700;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--pink);
+  border-bottom:1.5px solid rgba(242,184,198,.4);padding-bottom:3px;
+  white-space:nowrap;transition:border-color .2s;flex-shrink:0;
+}
+.svc-cta:hover{border-color:var(--pink)}
+
+/* ── WORK ── */
+.work-section{background:var(--cream)}
+.work-grid{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:2px;background:var(--black);
+}
+.wc{
+  background:var(--cream2);
+  padding:20px 16px 24px;
+  transition:background .2s;cursor:default;
+}
+.wc:hover{background:var(--pink)}
+.wc-n{
+  font-family:var(--display);font-size:10px;font-weight:700;
+  letter-spacing:.18em;text-transform:uppercase;
+  color:rgba(0,0,0,.3);margin-bottom:8px;
+}
+.wc-name{
+  font-family:var(--display);font-size:clamp(13px,1.8vw,18px);
+  font-weight:800;text-transform:uppercase;letter-spacing:.03em;
+  color:var(--black);line-height:1.1;margin-bottom:4px;
+}
+.wc-type{font-size:11px;font-weight:300;color:rgba(0,0,0,.45);letter-spacing:.04em}
+
+/* ── PROCESS ── */
+.process-section{background:var(--dark)}
+.process-grid{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  gap:2px;background:rgba(255,255,255,.06);
+}
+.pc{
+  background:var(--dark);padding:36px 24px 44px;
+  position:relative;overflow:hidden;transition:background .3s;
+}
+.pc:hover{background:#222}
+.pc-n{
+  font-family:var(--display);font-size:88px;font-weight:900;
+  color:rgba(255,255,255,.04);
+  position:absolute;top:8px;right:10px;line-height:1;letter-spacing:-.04em;
+  pointer-events:none;
+}
+.pc-label{
+  font-family:var(--display);font-size:10px;font-weight:700;
+  letter-spacing:.26em;text-transform:uppercase;color:var(--pink);
+  margin-bottom:12px;
+}
+.pc-title{
+  font-family:var(--display);font-size:clamp(20px,2.5vw,30px);
+  font-weight:800;text-transform:uppercase;letter-spacing:.03em;
+  color:var(--cream);line-height:1.05;margin-bottom:10px;
+}
+.pc-body{font-size:13px;font-weight:300;color:rgba(255,255,255,.4);line-height:1.8}
+
+/* ── CONTACT ── */
+.contact-section{background:var(--cream)}
+.contact-bevel-block{border-bottom:2.5px solid var(--black);overflow:hidden}
+.contact-bevel-inner{
+  background:linear-gradient(180deg,
+    #d0cec8 0%,#b8b6b0 8%,#e4e2dc 16%,
+    #c0beba 24%,#a8a6a2 32%,#d8d6d0 40%,
+    #c4c2bc 48%,#b0aea8 56%,#d0cec8 64%,
+    #b8b6b0 72%,#e0ded8 80%,#c8c6c0 88%,#a8a6a2 100%);
+  padding:10px 36px 14px;position:relative;overflow:hidden;
+}
+.contact-bevel-inner::before{
+  content:'';position:absolute;left:0;top:0;bottom:0;width:18px;
+  background:linear-gradient(90deg,#888884,#d0cec8);
+}
+.contact-bevel-inner::after{
+  content:'';position:absolute;right:0;top:0;bottom:0;width:18px;
+  background:linear-gradient(270deg,#888884,#d0cec8);
+}
+.contact-bevel-type{
+  font-family:var(--display);
+  font-size:clamp(36px,8vw,120px);
+  font-weight:900;font-style:italic;text-transform:uppercase;
+  letter-spacing:-.02em;line-height:.88;text-align:center;
+  position:relative;z-index:2;
+  color:transparent;
+  background:linear-gradient(180deg,
+    #fff 0%,#d0cec8 10%,#686866 22%,
+    #c8c6c0 32%,#fff 42%,#a8a6a0 52%,
+    #606060 62%,#d8d6d0 72%,
+    #fff 82%,#8a8888 92%,#404040 100%);
+  -webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;
+  filter:drop-shadow(2px 4px 0 rgba(0,0,0,.4)) drop-shadow(4px 8px 0 rgba(0,0,0,.2));
 }
 
-/* Pink section header band */
-.section-pink-header {
-  background: var(--pink);
-  border-bottom: 2.5px solid var(--black);
-  padding: 12px 40px;
-  display: flex; justify-content: space-between; align-items: center;
+.contact-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:2px;background:var(--black);
 }
-.section-pink-header-title {
-  font-family: var(--display);
-  font-size: clamp(20px, 3vw, 36px);
-  font-weight: 900; text-transform: uppercase;
-  letter-spacing: .08em; color: var(--black);
+.contact-col{background:var(--cream);padding:40px 28px}
+.contact-col-alt{background:var(--cream2)}
+.contact-email{
+  display:block;font-family:var(--display);
+  font-size:clamp(14px,2vw,24px);font-weight:800;
+  text-transform:uppercase;letter-spacing:.04em;color:var(--black);
+  border-bottom:2.5px solid var(--black);padding-bottom:6px;
+  margin-bottom:24px;transition:color .2s,border-color .2s;
+  word-break:break-all;
 }
-.section-pink-header-sub {
-  font-family: var(--display);
-  font-size: 12px; font-weight: 700;
-  letter-spacing: .22em; text-transform: uppercase;
-  color: rgba(0,0,0,.5);
+.contact-email:hover{color:var(--gray);border-color:var(--gray)}
+
+.ci-list{display:flex;flex-direction:column;gap:0}
+.ci-row{
+  padding:14px 0;border-bottom:1px solid rgba(0,0,0,.1);
+}
+.ci-row:first-child{border-top:1px solid rgba(0,0,0,.1)}
+.ci-label{
+  font-family:var(--display);font-size:9px;font-weight:700;
+  letter-spacing:.24em;text-transform:uppercase;color:rgba(0,0,0,.35);
+  margin-bottom:4px;
+}
+.ci-val{
+  font-family:var(--display);font-size:clamp(14px,2vw,20px);
+  font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:var(--black);
+}
+.ci-val a{color:var(--black);transition:color .2s;word-break:break-all}
+.ci-val a:hover{color:var(--gray)}
+
+/* ── BUTTONS ── */
+.btn-blk{
+  display:inline-block;background:var(--black);color:var(--cream);
+  font-family:var(--display);font-size:13px;font-weight:700;
+  letter-spacing:.18em;text-transform:uppercase;
+  padding:13px 32px;border:2px solid var(--black);
+  transition:background .25s,color .25s;text-align:center;
+}
+.btn-blk:hover{background:transparent;color:var(--black)}
+.btn-pink{
+  display:inline-block;background:var(--pink);color:var(--black);
+  font-family:var(--display);font-size:13px;font-weight:700;
+  letter-spacing:.18em;text-transform:uppercase;
+  padding:13px 32px;border:2px solid var(--black);
+  transition:background .25s;text-align:center;
+}
+.btn-pink:hover{background:var(--pink-dark)}
+
+/* ── FOOTER ── */
+footer{background:var(--cream);border-top:none}
+.footer-pink-band{
+  background:var(--pink);border-bottom:2.5px solid var(--black);
+  padding:9px 24px;text-align:center;
+}
+.fpb-text{
+  font-family:var(--display);font-size:11px;font-weight:700;
+  letter-spacing:.26em;text-transform:uppercase;color:var(--black);
+}
+.footer-info{
+  display:flex;flex-wrap:wrap;border-bottom:2px solid var(--black);
+}
+.footer-cell{
+  flex:1;min-width:140px;
+  padding:16px 20px;border-right:2px solid var(--black);
+  display:flex;flex-direction:column;align-items:center;
+  justify-content:center;text-align:center;
+}
+.footer-cell:last-child{border-right:none}
+.fc-lbl{
+  font-family:var(--display);font-size:9px;font-weight:700;
+  letter-spacing:.2em;text-transform:uppercase;color:rgba(0,0,0,.35);
+  margin-bottom:4px;
+}
+.fc-val{
+  font-family:var(--display);font-size:clamp(12px,1.6vw,16px);
+  font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--black);
+  word-break:break-all;
+}
+.fc-val a{color:var(--black);transition:color .2s}
+.fc-val a:hover{color:var(--gray)}
+.footer-logo-box{
+  flex:0 0 auto;min-width:72px;
+  border-left:2.5px solid var(--black);
+  display:flex;flex-direction:column;align-items:center;
+  justify-content:center;padding:10px 14px;
+}
+.flb-main{
+  font-family:var(--display);font-size:clamp(18px,3vw,28px);
+  font-weight:900;line-height:1;color:var(--black);
+}
+.flb-sub{
+  font-family:var(--display);font-size:clamp(7px,.9vw,9px);
+  font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--black);border-top:1.5px solid var(--black);
+  padding-top:3px;margin-top:3px;text-align:center;
+}
+.footer-bottom{
+  padding:12px 24px;
+  display:flex;flex-wrap:wrap;gap:10px;
+  justify-content:space-between;align-items:center;
+}
+.footer-copy{
+  font-family:var(--display);font-size:11px;font-weight:600;
+  letter-spacing:.12em;text-transform:uppercase;color:rgba(0,0,0,.4);
+}
+.footer-socials{display:flex;flex-wrap:wrap;gap:14px}
+.fsoc{
+  font-family:var(--display);font-size:11px;font-weight:700;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--black);
+  border-bottom:1.5px solid rgba(0,0,0,.3);padding-bottom:2px;
+  transition:border-color .2s;
+}
+.fsoc:hover{border-color:var(--black)}
+
+/* ── REVEAL (no initial transform — prevents Safari layout issues) ── */
+.rv{opacity:0;transition:opacity .7s ease}
+.rv.in{opacity:1}
+/* Subtle upward movement only — tiny, won't cause reflow in Safari */
+.rv-up{opacity:0;transition:opacity .7s ease,transform .7s ease;
+  transform:translateY(14px) translateZ(0)}
+.rv-up.in{opacity:1;transform:translateY(0) translateZ(0)}
+
+/* ── MOBILE RESPONSIVE ── */
+@media(max-width:700px){
+  /* Nav */
+  .nav-links{display:none}
+  .nav-hamburger{display:flex}
+  .mobile-menu{display:flex}
+
+  /* Hero bands */
+  .pink-band{flex-direction:column;align-items:center;gap:2px;text-align:center}
+
+  /* Info bar stacks */
+  .info-bar{flex-direction:column}
+  .info-cell{border-right:none;border-bottom:1.5px solid var(--black);flex:none;width:100%}
+  .logo-cell{border-left:none;border-top:2px solid var(--black);width:100%;flex-direction:row;justify-content:center;gap:12px}
+
+  /* About two-col → single */
+  .about-two-col{grid-template-columns:1fr}
+  .stat-row{grid-template-columns:1fr 1fr}
+
+  /* Services */
+  .svc-row{grid-template-columns:36px 1fr;gap:10px}
+  .svc-cta{display:none}
+
+  /* Work grid → 2 col */
+  .work-grid{grid-template-columns:repeat(2,1fr)}
+
+  /* Process → 2 col */
+  .process-grid{grid-template-columns:1fr 1fr}
+
+  /* Contact grid → single */
+  .contact-grid{grid-template-columns:1fr}
+
+  /* Footer info → wrap naturally */
+  .footer-info{flex-direction:column}
+  .footer-cell{border-right:none;border-bottom:1.5px solid var(--black);min-width:100%}
+  .footer-logo-box{border-left:none;border-top:2px solid var(--black);flex-direction:row;gap:10px;width:100%;justify-content:center}
+
+  /* Section inner padding */
+  .section-inner,.section-inner-narrow{padding:36px 16px}
+  .section-inner-wide{padding:32px 16px}
 }
 
-.services-inner { padding: 40px; }
-.services-list { display: flex; flex-direction: column; gap: 2px; }
-.service-row {
-  display: grid;
-  grid-template-columns: 56px 1fr 1fr 120px;
-  align-items: center; gap: 24px;
-  padding: 20px 24px;
-  background: rgba(255,255,255,.04);
-  border: 1px solid rgba(255,255,255,.07);
-  transition: background .25s;
-  cursor: default;
-}
-.service-row:hover { background: rgba(242,184,198,.08); border-color: rgba(242,184,198,.2); }
-.service-row:hover .svc-name { color: var(--pink); }
-.service-num {
-  font-family: var(--display);
-  font-size: 28px; font-weight: 900;
-  color: rgba(255,255,255,.1); line-height: 1;
-  letter-spacing: -.02em;
-}
-.svc-name {
-  font-family: var(--display);
-  font-size: clamp(20px, 2.5vw, 30px);
-  font-weight: 800; text-transform: uppercase;
-  letter-spacing: .03em; color: var(--cream);
-  line-height: 1.05; transition: color .25s;
-}
-.svc-desc {
-  font-size: 13px; font-weight: 300;
-  color: rgba(255,255,255,.45); line-height: 1.65;
-}
-.svc-link {
-  font-family: var(--display);
-  font-size: 11px; font-weight: 700;
-  letter-spacing: .16em; text-transform: uppercase;
-  color: var(--pink);
-  border-bottom: 1.5px solid rgba(242,184,198,.4);
-  padding-bottom: 3px;
-  text-align: right;
-  transition: border-color .2s;
-  display: inline-block; margin-left: auto;
-}
-.svc-link:hover { border-color: var(--pink); }
-
-/* ═══════════════════════════════════
-   SECTION 4 — WORK (cream)
-═══════════════════════════════════ */
-.work-section {
-  background: var(--cream);
-  border-bottom: 3px solid var(--black);
-}
-.work-inner { padding: 40px; }
-
-.work-heading-block {
-  display: flex; justify-content: space-between;
-  align-items: flex-end; margin-bottom: 32px;
-}
-.work-heading {
-  font-family: var(--display);
-  font-size: clamp(52px, 10vw, 140px);
-  font-weight: 900; font-style: italic;
-  text-transform: uppercase;
-  letter-spacing: -.02em; line-height: .86;
-  color: var(--black);
-}
-.work-heading-sub {
-  font-family: var(--display);
-  font-size: 13px; font-weight: 700;
-  letter-spacing: .2em; text-transform: uppercase;
-  color: var(--gray-mid); padding-bottom: 10px;
-}
-
-.work-grid {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 2px; background: var(--black);
-}
-.work-cell {
-  background: var(--cream2);
-  padding: 22px 18px 26px;
-  position: relative; overflow: hidden;
-  cursor: default;
-  transition: background .25s;
-  border: none;
-}
-.work-cell:hover { background: var(--pink); }
-.work-cell:hover .wc-name { color: var(--black); }
-.wc-num {
-  font-family: var(--display);
-  font-size: 10px; font-weight: 700;
-  letter-spacing: .18em; text-transform: uppercase;
-  color: rgba(0,0,0,.3); margin-bottom: 10px;
-}
-.wc-name {
-  font-family: var(--display);
-  font-size: clamp(14px, 1.8vw, 20px);
-  font-weight: 800; text-transform: uppercase;
-  letter-spacing: .03em; color: var(--black);
-  line-height: 1.1; margin-bottom: 5px;
-  transition: color .25s;
-}
-.wc-type {
-  font-size: 11px; font-weight: 400;
-  color: rgba(0,0,0,.45); letter-spacing: .06em;
-}
-
-/* ═══════════════════════════════════
-   SECTION 5 — PROCESS (dark)
-═══════════════════════════════════ */
-.process-section {
-  background: var(--dark-bg);
-  border-bottom: 3px solid var(--black);
-}
-.process-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 2px; background: rgba(255,255,255,.06);
-}
-.process-card {
-  background: var(--dark-bg);
-  padding: 40px 28px 48px;
-  position: relative; overflow: hidden;
-  cursor: default; transition: background .3s;
-}
-.process-card:hover { background: #222; }
-.pc-n {
-  font-family: var(--display);
-  font-size: 96px; font-weight: 900;
-  color: rgba(255,255,255,.04);
-  position: absolute; top: 10px; right: 14px;
-  line-height: 1; letter-spacing: -.04em;
-  pointer-events: none;
-}
-.pc-label {
-  font-family: var(--display);
-  font-size: 10px; font-weight: 700;
-  letter-spacing: .26em; text-transform: uppercase;
-  color: var(--pink); margin-bottom: 14px;
-}
-.pc-title {
-  font-family: var(--display);
-  font-size: clamp(22px, 2.5vw, 32px);
-  font-weight: 800; text-transform: uppercase;
-  letter-spacing: .03em; color: var(--cream);
-  line-height: 1.05; margin-bottom: 12px;
-}
-.pc-body {
-  font-size: 13px; font-weight: 300;
-  color: rgba(255,255,255,.45); line-height: 1.8;
-}
-
-/* ═══════════════════════════════════
-   SECTION 6 — CONTACT (cream)
-═══════════════════════════════════ */
-.contact-section {
-  background: var(--cream);
-  border-bottom: 3px solid var(--black);
-}
-
-/* Big bevel headline for contact */
-.contact-bevel-block {
-  border-bottom: 2.5px solid var(--black);
-  overflow: hidden;
-}
-.contact-bevel-inner {
-  background: linear-gradient(
-    180deg,
-    #d0cec8 0%, #b8b6b0 8%, #e4e2dc 16%,
-    #c0beba 24%, #a8a6a2 32%, #d8d6d0 40%,
-    #c4c2bc 48%, #b0aea8 56%, #d0cec8 64%,
-    #b8b6b0 72%, #e0ded8 80%, #c8c6c0 88%, #a8a6a2 100%
-  );
-  padding: 12px 20px 16px;
-  position: relative;
-}
-.contact-bevel-inner::before {
-  content: ''; position: absolute;
-  left: 0; top: 0; bottom: 0; width: 20px;
-  background: linear-gradient(90deg, #888884 0%, #d0cec8 100%);
-}
-.contact-bevel-inner::after {
-  content: ''; position: absolute;
-  right: 0; top: 0; bottom: 0; width: 20px;
-  background: linear-gradient(270deg, #888884 0%, #d0cec8 100%);
-}
-.contact-bevel-type {
-  font-family: var(--display);
-  font-size: clamp(40px, 9vw, 130px);
-  font-weight: 900; font-style: italic;
-  text-transform: uppercase;
-  letter-spacing: -.02em; line-height: .88;
-  text-align: center; position: relative; z-index: 2;
-  color: transparent;
-  background: linear-gradient(
-    180deg,
-    #ffffff 0%, #d0cec8 10%, #686866 22%,
-    #c8c6c0 32%, #ffffff 42%, #a8a6a0 52%,
-    #606060 62%, #d8d6d0 72%,
-    #ffffff 82%, #8a8888 92%, #404040 100%
-  );
-  -webkit-background-clip: text; background-clip: text;
-  -webkit-text-fill-color: transparent;
-  filter: drop-shadow(2px 5px 0 rgba(0,0,0,.45)) drop-shadow(4px 10px 0 rgba(0,0,0,.2));
-  user-select: none;
-}
-
-.contact-inner {
-  padding: 64px 40px;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0; align-items: start;
-}
-.contact-left {
-  padding-right: 56px;
-  border-right: 2.5px solid var(--black);
-}
-.contact-right { padding-left: 56px; }
-
-.contact-eyebrow {
-  font-family: var(--display);
-  font-size: 11px; font-weight: 700;
-  letter-spacing: .28em; text-transform: uppercase;
-  color: var(--gray-mid); margin-bottom: 20px;
-  display: flex; align-items: center; gap: 12px;
-}
-.contact-eyebrow::before {
-  content: ''; display: block;
-  width: 32px; height: 2px; background: var(--black);
-}
-.contact-body {
-  font-size: 15px; font-weight: 300;
-  color: #444; line-height: 1.85;
-  margin-bottom: 28px; max-width: 420px;
-}
-.contact-email-display {
-  display: block;
-  font-family: var(--display);
-  font-size: clamp(16px, 2.5vw, 28px);
-  font-weight: 800; text-transform: uppercase;
-  letter-spacing: .04em; color: var(--black);
-  border-bottom: 3px solid var(--black);
-  padding-bottom: 8px; margin-bottom: 28px;
-  transition: color .2s, border-color .2s;
-}
-.contact-email-display:hover { color: var(--gray-mid); border-color: var(--gray-mid); }
-
-.contact-info-list { display: flex; flex-direction: column; gap: 0; }
-.contact-info-row {
-  display: flex; flex-direction: column;
-  padding: 18px 0;
-  border-bottom: 1.5px solid rgba(0,0,0,.1);
-}
-.contact-info-row:first-child { border-top: 1.5px solid rgba(0,0,0,.1); }
-.ci-label {
-  font-family: var(--display);
-  font-size: 10px; font-weight: 700;
-  letter-spacing: .24em; text-transform: uppercase;
-  color: rgba(0,0,0,.35); margin-bottom: 5px;
-}
-.ci-value {
-  font-family: var(--display);
-  font-size: clamp(16px, 2vw, 22px);
-  font-weight: 800; text-transform: uppercase;
-  letter-spacing: .04em; color: var(--black);
-}
-.ci-value a { color: var(--black); transition: color .2s; }
-.ci-value a:hover { color: var(--gray-mid); }
-
-/* ═══════════════════════════════════
-   FOOTER POSTER BAR
-═══════════════════════════════════ */
-footer {
-  background: var(--cream);
-  border-top: 2.5px solid var(--black);
-}
-.footer-pink-band {
-  background: var(--pink);
-  border-bottom: 2.5px solid var(--black);
-  padding: 10px 32px;
-  text-align: center;
-}
-.footer-pink-text {
-  font-family: var(--display);
-  font-size: 12px; font-weight: 700;
-  letter-spacing: .28em; text-transform: uppercase;
-  color: var(--black);
-}
-.footer-main {
-  display: grid;
-  grid-template-columns: auto 1fr auto auto auto auto;
-  align-items: stretch;
-  border-bottom: 2px solid var(--black);
-}
-.footer-cell {
-  padding: 18px 24px;
-  border-right: 2px solid var(--black);
-  display: flex; flex-direction: column;
-  justify-content: center;
-}
-.footer-cell:last-child { border-right: none; }
-.fc-label {
-  font-family: var(--display);
-  font-size: 10px; font-weight: 700;
-  letter-spacing: .2em; text-transform: uppercase;
-  color: rgba(0,0,0,.4); margin-bottom: 4px;
-}
-.fc-value {
-  font-family: var(--display);
-  font-size: clamp(13px, 1.8vw, 18px); font-weight: 800;
-  text-transform: uppercase; letter-spacing: .06em;
-  color: var(--black);
-}
-.fc-value a { color: var(--black); transition: color .2s; }
-.fc-value a:hover { color: var(--gray-mid); }
-.footer-logo-cell {
-  padding: 14px 18px;
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  gap: 2px; min-width: 80px;
-  border-left: 2.5px solid var(--black);
-}
-.flc-main {
-  font-family: var(--display);
-  font-size: clamp(20px, 3vw, 32px);
-  font-weight: 900; line-height: 1;
-  color: var(--black); letter-spacing: -.01em;
-}
-.flc-lines {
-  display: flex; flex-direction: column; gap: 0;
-  border-top: 1.5px solid var(--black);
-  padding-top: 3px; width: 100%; text-align: center;
-}
-.flc-line {
-  font-family: var(--display);
-  font-size: clamp(7px, .9vw, 10px); font-weight: 700;
-  letter-spacing: .1em; text-transform: uppercase;
-  color: var(--black); line-height: 1.2;
-}
-.footer-bottom {
-  padding: 12px 32px;
-  display: flex; justify-content: space-between; align-items: center;
-}
-.footer-copy {
-  font-family: var(--display);
-  font-size: 11px; font-weight: 600;
-  letter-spacing: .14em; text-transform: uppercase;
-  color: rgba(0,0,0,.4);
-}
-.footer-socials { display: flex; gap: 16px; }
-.footer-social {
-  font-family: var(--display);
-  font-size: 11px; font-weight: 700;
-  letter-spacing: .12em; text-transform: uppercase;
-  color: var(--black);
-  border-bottom: 1.5px solid rgba(0,0,0,.3); padding-bottom: 2px;
-  transition: border-color .2s;
-}
-.footer-social:hover { border-color: var(--black); }
-
-/* ═══════════════════════════════════
-   SCROLL REVEAL
-═══════════════════════════════════ */
-.reveal { opacity: 0; transform: translateY(24px); transition: opacity .75s ease, transform .75s ease; }
-.reveal.in { opacity: 1; transform: none; }
-.reveal-l { opacity: 0; transform: translateX(-24px); transition: opacity .75s ease, transform .75s ease; }
-.reveal-l.in { opacity: 1; transform: none; }
-.reveal-r { opacity: 0; transform: translateX(24px); transition: opacity .75s ease, transform .75s ease; }
-.reveal-r.in { opacity: 1; transform: none; }
-
-/* ═══════════════════════════════════
-   RESPONSIVE
-═══════════════════════════════════ */
-@media(max-width: 768px) {
-  .about-grid, .contact-inner {
-    grid-template-columns: 1fr;
-  }
-  .about-left { border-right: none; padding-right: 0; border-bottom: 2px solid var(--black); padding-bottom: 40px; margin-bottom: 40px; }
-  .contact-left { border-right: none; padding-right: 0; padding-bottom: 40px; }
-  .contact-right { padding-left: 0; }
-  .work-grid { grid-template-columns: repeat(2, 1fr); }
-  .process-grid { grid-template-columns: 1fr 1fr; }
-  .services-section .service-row { grid-template-columns: 40px 1fr; }
-  .svc-desc, .svc-link { display: none; }
-  .hero-info-bar { grid-template-columns: 1fr 1fr; flex-wrap: wrap; }
-  .footer-main { grid-template-columns: 1fr 1fr; flex-wrap: wrap; }
+@media(max-width:420px){
+  .work-grid{grid-template-columns:1fr}
+  .process-grid{grid-template-columns:1fr}
+  .stat-row{grid-template-columns:1fr 1fr}
 }
 </style>
 </head>
 <body>
 
-<!-- ════════════════════════════════
-  FLOATING NAV (reveals on scroll)
-════════════════════════════════ -->
+<!-- ── FLOATING NAV ── -->
 <nav class="site-nav" id="siteNav">
-  <a href="#top" class="nav-logo-text">Quiet Contrast</a>
+  <a href="#top" class="nav-brand">Quiet Contrast</a>
   <div class="nav-links">
     <a href="#about" class="nav-link">About</a>
     <a href="#services" class="nav-link">Services</a>
@@ -852,481 +634,439 @@ footer {
     <a href="#contact" class="nav-link">Contact</a>
     <a href="mailto:justin@quietcontrast.com" class="nav-cta">Book Now</a>
   </div>
+  <div class="nav-hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </div>
 </nav>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#about" class="mobile-link" onclick="closeMenu()">About</a>
+  <a href="#services" class="mobile-link" onclick="closeMenu()">Services</a>
+  <a href="#work" class="mobile-link" onclick="closeMenu()">Work</a>
+  <a href="#contact" class="mobile-link" onclick="closeMenu()">Contact</a>
+  <a href="mailto:justin@quietcontrast.com" class="mobile-link" onclick="closeMenu()">Book Now →</a>
+</div>
 
-<!-- ════════════════════════════════
-  SECTION 1 — HERO POSTER
-════════════════════════════════ -->
+<!-- ════════════════════
+  HERO
+════════════════════ -->
 <section class="poster-hero" id="top">
 
-  <!-- Studio name -->
-  <div class="studio-name-top">QUIET CONTRAST</div>
+  <div class="studio-name">QUIET CONTRAST</div>
 
-  <!-- Pink date band -->
   <div class="pink-band">
     <span class="pink-band-text">Southern California</span>
     <span class="pink-band-text">Est. 2009</span>
   </div>
 
-  <!-- 3D Chrome bevel type -->
   <div class="bevel-block">
     <div class="bevel-inner">
-      <div class="bevel-type">GRAPHIC&nbsp;DESIGN</div>
+      <div class="bevel-edge-l"></div>
+      <div class="bevel-edge-r"></div>
+      <div class="bevel-type">GRAPHIC DESIGN</div>
     </div>
   </div>
 
-  <!-- Pink subtitle band -->
-  <div class="pink-subtitle-band">
-    <div class="pink-subtitle-text">Quiet Contrast Design Studio</div>
+  <div class="pink-sub-band">
+    <div class="pink-sub-text">Quiet Contrast Design Studio</div>
   </div>
 
-  <!-- Large dark zone with iridescent fluid SVG art -->
-  <div class="hero-dark-zone">
-    <div class="hero-dark-zone-inner">
-      <svg viewBox="0 0 900 580" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;position:absolute;inset:0">
-        <defs>
-          <!-- Iridescent gradient 1 -->
-          <radialGradient id="iri1" cx="30%" cy="40%" r="70%">
-            <stop offset="0%" stop-color="#ff80c0" stop-opacity=".9"/>
-            <stop offset="20%" stop-color="#c0e0ff" stop-opacity=".8"/>
-            <stop offset="40%" stop-color="#80ffc0" stop-opacity=".85"/>
-            <stop offset="60%" stop-color="#ffe080" stop-opacity=".8"/>
-            <stop offset="80%" stop-color="#c080ff" stop-opacity=".75"/>
-            <stop offset="100%" stop-color="#ff8060" stop-opacity=".7"/>
-          </radialGradient>
-          <!-- Iridescent gradient 2 -->
-          <radialGradient id="iri2" cx="70%" cy="60%" r="60%">
-            <stop offset="0%" stop-color="#40ffff" stop-opacity=".8"/>
-            <stop offset="25%" stop-color="#ff40a0" stop-opacity=".75"/>
-            <stop offset="50%" stop-color="#80ff40" stop-opacity=".8"/>
-            <stop offset="75%" stop-color="#ff8040" stop-opacity=".7"/>
-            <stop offset="100%" stop-color="#4040ff" stop-opacity=".6"/>
-          </radialGradient>
-          <!-- Dark overlay for depth -->
-          <radialGradient id="darkOv" cx="50%" cy="50%" r="75%">
-            <stop offset="0%" stop-color="transparent"/>
-            <stop offset="100%" stop-color="#0a0a0a" stop-opacity=".7"/>
-          </radialGradient>
-          <!-- Bubble shimmer -->
-          <filter id="blur1">
-            <feGaussianBlur stdDeviation="2.5"/>
-          </filter>
-          <filter id="blur2">
-            <feGaussianBlur stdDeviation="1.5"/>
-          </filter>
-        </defs>
-
-        <!-- Background -->
-        <rect width="900" height="580" fill="#1a1a18"/>
-
-        <!-- Main fluid ribbon shape — left side -->
-        <path d="M 120 520 C 160 480, 140 420, 180 380
-                 C 220 340, 300 350, 340 310
-                 C 380 270, 390 220, 420 190
-                 C 450 160, 500 155, 520 130
-                 C 545 100, 540 70, 560 55
-                 C 580 40, 610 45, 625 60
-                 L 700 80
-                 C 730 95, 740 120, 720 150
-                 C 700 180, 660 195, 640 230
-                 C 620 265, 630 305, 610 340
-                 C 590 375, 550 390, 530 430
-                 C 510 470, 520 510, 500 545
-                 C 480 575, 450 580, 420 565
-                 C 380 545, 360 510, 320 500
-                 C 280 490, 240 505, 200 520
-                 C 175 530, 140 545, 120 520 Z"
-          fill="url(#iri1)" opacity=".85"/>
-
-        <!-- Second fluid ribbon — right, overlapping -->
-        <path d="M 200 560 C 240 530, 260 490, 300 460
-                 C 340 430, 390 435, 430 410
-                 C 470 385, 490 345, 520 320
-                 C 550 295, 590 290, 620 265
-                 C 650 240, 665 205, 690 180
-                 C 715 155, 745 145, 760 120
-                 C 775 95, 770 65, 790 50
-                 L 830 45
-                 C 855 48, 870 65, 865 90
-                 C 860 115, 840 135, 830 165
-                 C 820 195, 825 230, 810 260
-                 C 795 290, 765 310, 750 345
-                 C 735 380, 740 420, 720 455
-                 C 700 490, 665 510, 640 540
-                 C 615 565, 580 578, 545 572
-                 C 500 562, 480 535, 440 530
-                 C 400 525, 360 540, 320 548
-                 C 285 555, 240 575, 200 560 Z"
-          fill="url(#iri2)" opacity=".75"/>
-
-        <!-- Thin highlight streaks for soap-bubble shimmer -->
-        <path d="M 420 140 Q 500 110, 580 135 Q 640 155, 660 200"
-          fill="none" stroke="rgba(255,255,255,.45)" stroke-width="6" stroke-linecap="round" filter="url(#blur2)"/>
-        <path d="M 350 280 Q 430 255, 510 280 Q 570 300, 580 345"
-          fill="none" stroke="rgba(200,255,255,.4)" stroke-width="4" stroke-linecap="round" filter="url(#blur2)"/>
-        <path d="M 280 400 Q 350 375, 420 400 Q 480 420, 490 465"
-          fill="none" stroke="rgba(255,200,255,.35)" stroke-width="3.5" stroke-linecap="round" filter="url(#blur1)"/>
-
-        <!-- Dark edge vignette -->
-        <rect width="900" height="580" fill="url(#darkOv)"/>
-
-        <!-- Decorative text inside dark zone -->
-        <text x="40" y="555" font-family="'Barlow Condensed'" font-size="11" font-weight="700" letter-spacing="3" text-transform="uppercase" fill="rgba(255,255,255,.18)">QUIET CONTRAST DESIGN STUDIO — SOUTHERN CALIFORNIA — justin@quietcontrast.com</text>
-      </svg>
-    </div>
+  <!-- Dark zone — iridescent SVG fluid art, no photos -->
+  <div class="hero-dark">
+    <svg viewBox="0 0 900 500" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <defs>
+        <radialGradient id="g1" cx="35%" cy="45%" r="65%">
+          <stop offset="0%" stop-color="#ff80c0" stop-opacity=".9"/>
+          <stop offset="20%" stop-color="#a0e0ff" stop-opacity=".85"/>
+          <stop offset="45%" stop-color="#80ffb0" stop-opacity=".8"/>
+          <stop offset="65%" stop-color="#ffe070" stop-opacity=".8"/>
+          <stop offset="85%" stop-color="#c080ff" stop-opacity=".75"/>
+          <stop offset="100%" stop-color="#ff8060" stop-opacity=".7"/>
+        </radialGradient>
+        <radialGradient id="g2" cx="65%" cy="55%" r="60%">
+          <stop offset="0%" stop-color="#40ffee" stop-opacity=".8"/>
+          <stop offset="30%" stop-color="#ff40a0" stop-opacity=".75"/>
+          <stop offset="60%" stop-color="#80ff40" stop-opacity=".8"/>
+          <stop offset="80%" stop-color="#ff8040" stop-opacity=".7"/>
+          <stop offset="100%" stop-color="#4040ff" stop-opacity=".6"/>
+        </radialGradient>
+        <radialGradient id="vignette" cx="50%" cy="50%" r="70%">
+          <stop offset="0%" stop-color="transparent"/>
+          <stop offset="100%" stop-color="#0a0a0a" stop-opacity=".75"/>
+        </radialGradient>
+        <filter id="glow"><feGaussianBlur stdDeviation="2"/></filter>
+      </defs>
+      <rect width="900" height="500" fill="#1a1a18"/>
+      <!-- Main fluid ribbon 1 -->
+      <path d="M110 450 C150 410,140 360,185 320 C230 280,310 292,355 255
+               C400 218,415 168,448 138 C480 108,535 102,558 78
+               C582 52,578 24,600 12 L660 18
+               C695 32,705 62,682 95 C659 128,618 142,598 180
+               C578 218,590 262,568 300 C546 338,505 352,482 395
+               C459 438,472 478,450 496 L420 498
+               C385 492,365 462,325 452 C285 442,248 458,205 468
+               C170 476,132 468,110 450 Z"
+            fill="url(#g1)" opacity=".88"/>
+      <!-- Main fluid ribbon 2 -->
+      <path d="M195 488 C238 458,256 416,298 388 C340 360,392 365,435 340
+               C478 315,498 272,530 248 C562 224,600 218,630 193
+               C660 168,674 133,700 108 C726 83,756 73,772 48 L815 42
+               C840 46,856 64,850 92 C844 120,822 142,812 174
+               C802 206,808 244,792 278 C776 312,744 334,728 370
+               C712 406,718 448,698 478 C678 504,645 516,610 510
+               C566 500,546 472,506 466 C466 460,428 476,388 482
+               C350 488,308 506,260 500 C228 496,198 502,195 488 Z"
+            fill="url(#g2)" opacity=".78"/>
+      <!-- Shimmer highlights -->
+      <path d="M420 108 Q510 80,595 108 Q660 130,672 182"
+            fill="none" stroke="rgba(255,255,255,.4)" stroke-width="5" stroke-linecap="round" filter="url(#glow)"/>
+      <path d="M340 250 Q428 222,512 250 Q575 272,585 322"
+            fill="none" stroke="rgba(200,255,255,.35)" stroke-width="3.5" stroke-linecap="round" filter="url(#glow)"/>
+      <path d="M268 368 Q348 342,422 368 Q482 388,492 438"
+            fill="none" stroke="rgba(255,200,255,.3)" stroke-width="3" stroke-linecap="round" filter="url(#glow)"/>
+      <!-- Vignette -->
+      <rect width="900" height="500" fill="url(#vignette)"/>
+      <!-- Watermark text -->
+      <text x="450" y="488" font-family="'Barlow Condensed',sans-serif" font-size="10"
+            font-weight="700" letter-spacing="3" text-anchor="middle"
+            fill="rgba(255,255,255,.15)">QUIET CONTRAST — SOUTHERN CALIFORNIA — justin@quietcontrast.com</text>
+    </svg>
   </div>
 
-  <!-- Bottom info bar -->
-  <div class="hero-info-bar">
+  <!-- Info bar -->
+  <div class="info-bar">
     <div class="info-cell">
-      <span>📍</span>
-      <span>Southern California</span>
+      <div class="ic-label">Location</div>
+      <div class="ic-value">Southern California</div>
     </div>
-    <div class="info-cell" style="justify-content:center;border-left:2px solid var(--black)">
-      <a href="mailto:justin@quietcontrast.com">justin@quietcontrast.com</a>
-    </div>
-    <div class="info-cell">Available Mon–Fri</div>
     <div class="info-cell">
-      <a href="mailto:justin@quietcontrast.com">Book Now</a>
+      <div class="ic-label">Email</div>
+      <div class="ic-value"><a href="mailto:justin@quietcontrast.com">justin@quietcontrast.com</a></div>
     </div>
-    <div class="logo-box">
-      <div class="logo-box-main">QC</div>
-      <div class="logo-box-sub">Studio</div>
+    <div class="info-cell">
+      <div class="ic-label">Hours</div>
+      <div class="ic-value">Mon – Fri</div>
+    </div>
+    <div class="info-cell">
+      <div class="ic-label">Start</div>
+      <div class="ic-value"><a href="mailto:justin@quietcontrast.com">Book Now</a></div>
+    </div>
+    <div class="logo-cell">
+      <div class="logo-cell-big">QC</div>
+      <div class="logo-cell-small">Studio</div>
     </div>
   </div>
 
 </section>
 
-<!-- ════════════════════════════════
-  SECTION 2 — ABOUT
-════════════════════════════════ -->
-<section class="about-section" id="about">
-  <div class="about-top-label">About the Studio</div>
-  <div class="about-grid">
-    <div class="about-left reveal-l">
-      <h2 class="about-heading">Graphic<br>Design<br>Studio</h2>
-      <p class="about-body">Quiet Contrast is a full-service graphic design studio based in Southern California — crafting print, email, web, and brand identities for companies that demand precision and presence.</p>
-      <p class="about-body">With over 15 years of experience and a portfolio spanning Tilly's, Brighton, Entrepreneur Magazine, and Burger King, we bring the same exacting standard to every project, regardless of size or industry.</p>
-      <p class="about-body">Every project begins with a brief, not a guess. No templates. No filler. Just design that does something.</p>
-      <a href="mailto:justin@quietcontrast.com" class="btn-black">Start a Project</a>
+<!-- ════════════════════
+  ABOUT
+════════════════════ -->
+<section class="section about-section" id="about">
+  <div class="section-pink-head">
+    <div class="sph-title">About the Studio</div>
+    <div class="sph-sub">Full-Service Design</div>
+  </div>
+  <div class="section-inner">
+    <div class="sec-eyebrow rv-up">Quiet Contrast Design Agency</div>
+    <h2 class="sec-heading rv-up">Graphic<br>Design<br>Studio</h2>
+    <div class="stat-row rv-up">
+      <div class="stat-cell">
+        <div class="stat-num">15+</div>
+        <div class="stat-label">Years in Design</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-num">200+</div>
+        <div class="stat-label">Projects Done</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-num">50+</div>
+        <div class="stat-label">Clients Served</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-num">6wk</div>
+        <div class="stat-label">Avg. Turnaround</div>
+      </div>
     </div>
-    <div class="about-right reveal-r">
-      <div class="about-stat-grid">
-        <div class="about-stat-cell">
-          <div class="about-stat-num">15+</div>
-          <div class="about-stat-label">Years in Design</div>
+    <div class="about-two-col rv-up">
+      <div class="about-col">
+        <p class="about-body">Quiet Contrast is a full-service graphic design studio based in Southern California — crafting print, email, web, and brand identities for companies that demand precision and presence.</p>
+        <p class="about-body">Every project begins with a brief, not a guess. No templates. No filler. Just design that does something.</p>
+        <br/>
+        <a href="mailto:justin@quietcontrast.com" class="btn-blk">Start a Project</a>
+      </div>
+      <div class="about-col about-col-alt">
+        <p class="about-body">With over 15 years of experience and a portfolio spanning Tilly's, Brighton, Entrepreneur Magazine, and Burger King, we bring the same exacting standard to every project, regardless of size or industry.</p>
+        <p class="about-body">Based in Southern California. Available locally, nationally, and remotely.</p>
+        <br/>
+        <a href="mailto:justin@quietcontrast.com" class="btn-pink">Book a Discovery Call</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════
+  SERVICES
+════════════════════ -->
+<section class="section services-section" id="services">
+  <div class="section-pink-head">
+    <div class="sph-title">Services</div>
+    <div class="sph-sub">Six Disciplines — One Standard</div>
+  </div>
+  <div class="section-inner-wide">
+    <div class="svc-list rv-up">
+      <div class="svc-row">
+        <div class="svc-n">01</div>
+        <div class="svc-info">
+          <div class="svc-name">Large Scale Print Design</div>
+          <div class="svc-desc">Trade show displays, banners, vehicle wraps, building murals, and retail signage — engineered to own any physical space.</div>
         </div>
-        <div class="about-stat-cell" style="background:var(--pink)">
-          <div class="about-stat-num">200+</div>
-          <div class="about-stat-label">Projects Completed</div>
+        <a href="mailto:justin@quietcontrast.com" class="svc-cta">Get a Quote</a>
+      </div>
+      <div class="svc-row">
+        <div class="svc-n">02</div>
+        <div class="svc-info">
+          <div class="svc-name">Email Campaign Design</div>
+          <div class="svc-desc">Campaigns, newsletters, and automated sequences — the discipline of print, the precision of digital.</div>
         </div>
-        <div class="about-stat-cell" style="background:var(--cream2)">
-          <div class="about-stat-num">50+</div>
-          <div class="about-stat-label">Clients Served</div>
+        <a href="mailto:justin@quietcontrast.com" class="svc-cta">Get a Quote</a>
+      </div>
+      <div class="svc-row">
+        <div class="svc-n">03</div>
+        <div class="svc-info">
+          <div class="svc-name">Brand Identity</div>
+          <div class="svc-desc">Logos, visual systems, and brand guidelines — the full architecture your brand needs to show up consistently everywhere.</div>
         </div>
-        <div class="about-stat-cell">
-          <div class="about-stat-num">6wk</div>
-          <div class="about-stat-label">Avg. Turnaround</div>
+        <a href="mailto:justin@quietcontrast.com" class="svc-cta">Get a Quote</a>
+      </div>
+      <div class="svc-row">
+        <div class="svc-n">04</div>
+        <div class="svc-info">
+          <div class="svc-name">Website Design</div>
+          <div class="svc-desc">Brand-to-pixel execution from concept to handoff. Purposeful layouts built for performance and consistency.</div>
         </div>
+        <a href="mailto:justin@quietcontrast.com" class="svc-cta">Get a Quote</a>
       </div>
-      <a href="mailto:justin@quietcontrast.com" class="btn-pink">Book a Discovery Call</a>
-    </div>
-  </div>
-</section>
-
-<!-- ════════════════════════════════
-  SECTION 3 — SERVICES
-════════════════════════════════ -->
-<section class="services-section" id="services">
-  <div class="section-pink-header">
-    <div class="section-pink-header-title">Services</div>
-    <div class="section-pink-header-sub">Six Disciplines — One Studio</div>
-  </div>
-  <div class="services-inner reveal">
-    <div class="services-list">
-      <div class="service-row">
-        <div class="service-num">01</div>
-        <div class="svc-name">Large Scale Print Design</div>
-        <div class="svc-desc">Trade show displays, banners, vehicle wraps, building murals, retail signage — engineered to own any physical space they enter.</div>
-        <a href="mailto:justin@quietcontrast.com" class="svc-link">Get a Quote</a>
+      <div class="svc-row">
+        <div class="svc-n">05</div>
+        <div class="svc-info">
+          <div class="svc-name">Magazine &amp; Brochure Design</div>
+          <div class="svc-desc">Editorial layouts, product catalogues, and marketing collateral with typographic precision.</div>
+        </div>
+        <a href="mailto:justin@quietcontrast.com" class="svc-cta">Get a Quote</a>
       </div>
-      <div class="service-row">
-        <div class="service-num">02</div>
-        <div class="svc-name">Email Campaign Design</div>
-        <div class="svc-desc">Campaigns, newsletters, and automated sequences designed with the discipline of print and the precision of digital.</div>
-        <a href="mailto:justin@quietcontrast.com" class="svc-link">Get a Quote</a>
-      </div>
-      <div class="service-row">
-        <div class="service-num">03</div>
-        <div class="svc-name">Brand Identity</div>
-        <div class="svc-desc">Logos, visual systems, and brand guidelines — the full architecture your brand needs to show up consistently everywhere.</div>
-        <a href="mailto:justin@quietcontrast.com" class="svc-link">Get a Quote</a>
-      </div>
-      <div class="service-row">
-        <div class="service-num">04</div>
-        <div class="svc-name">Website Design</div>
-        <div class="svc-desc">Brand-to-pixel execution from concept to handoff. Clean, purposeful layouts built for performance and brand consistency.</div>
-        <a href="mailto:justin@quietcontrast.com" class="svc-link">Get a Quote</a>
-      </div>
-      <div class="service-row">
-        <div class="service-num">05</div>
-        <div class="svc-name">Magazine &amp; Brochure Design</div>
-        <div class="svc-desc">Editorial layouts, product catalogues, and marketing collateral built with typographic precision that makes readers stop and stay.</div>
-        <a href="mailto:justin@quietcontrast.com" class="svc-link">Get a Quote</a>
-      </div>
-      <div class="service-row">
-        <div class="service-num">06</div>
-        <div class="svc-name">All Graphic Design Needs</div>
-        <div class="svc-desc">Packaging, social assets, illustrations, OOH, infographics — if it's visual and your brand requires it, built to the same standard.</div>
-        <a href="mailto:justin@quietcontrast.com" class="svc-link">Get a Quote</a>
+      <div class="svc-row">
+        <div class="svc-n">06</div>
+        <div class="svc-info">
+          <div class="svc-name">All Graphic Design Needs</div>
+          <div class="svc-desc">Packaging, social assets, OOH, illustrations — if it's visual and your brand requires it, we build it.</div>
+        </div>
+        <a href="mailto:justin@quietcontrast.com" class="svc-cta">Get a Quote</a>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ════════════════════════════════
-  SECTION 4 — WORK
-════════════════════════════════ -->
-<section class="work-section" id="work">
-  <div class="section-pink-header" style="background:var(--cream2)">
-    <div class="section-pink-header-title">Selected Work</div>
-    <div class="section-pink-header-sub">Clients &amp; Projects</div>
+<!-- ════════════════════
+  WORK
+════════════════════ -->
+<section class="section work-section" id="work">
+  <div class="section-pink-head" style="background:var(--cream2)">
+    <div class="sph-title">Selected Work</div>
+    <div class="sph-sub">Clients &amp; Projects</div>
   </div>
-  <div class="work-inner">
-    <div class="work-heading-block reveal">
-      <h2 class="work-heading">Our<br>Work</h2>
-      <p class="work-heading-sub">Southern California<br>&amp; Beyond</p>
-    </div>
-    <div class="work-grid reveal">
-      <div class="work-cell">
-        <div class="wc-num">01</div>
-        <div class="wc-name">Tilly's Life Center</div>
-        <div class="wc-type">Print · Event Design</div>
-      </div>
-      <div class="work-cell">
-        <div class="wc-num">02</div>
-        <div class="wc-name">Etherwercs</div>
-        <div class="wc-type">Brand Identity · OOH</div>
-      </div>
-      <div class="work-cell">
-        <div class="wc-num">03</div>
-        <div class="wc-name">Entrepreneur Magazine</div>
-        <div class="wc-type">Editorial · Print</div>
-      </div>
-      <div class="work-cell">
-        <div class="wc-num">04</div>
-        <div class="wc-name">Brighton</div>
-        <div class="wc-type">Identity · Retail</div>
-      </div>
-      <div class="work-cell">
-        <div class="wc-num">05</div>
-        <div class="wc-name">Burger King</div>
-        <div class="wc-type">Large Format · Print</div>
-      </div>
-      <div class="work-cell">
-        <div class="wc-num">06</div>
-        <div class="wc-name">Tilly's</div>
-        <div class="wc-type">Email · Retail</div>
-      </div>
-      <div class="work-cell">
-        <div class="wc-num">07</div>
-        <div class="wc-name">Felina</div>
-        <div class="wc-type">Web · Brand Identity</div>
-      </div>
-      <div class="work-cell">
-        <div class="wc-num">08</div>
-        <div class="wc-name">Toal Engineering</div>
-        <div class="wc-type">Identity · Collateral</div>
-      </div>
-      <div class="work-cell">
-        <div class="wc-num">09</div>
-        <div class="wc-name">Ranch House Doors</div>
-        <div class="wc-type">Email · Brand</div>
-      </div>
-      <div class="work-cell">
-        <div class="wc-num">10</div>
-        <div class="wc-name">Direct Edge</div>
-        <div class="wc-type">Finance · Brand</div>
-      </div>
+  <div class="section-inner">
+    <h2 class="sec-heading rv-up">Our Work</h2>
+    <div class="work-grid rv-up">
+      <div class="wc"><div class="wc-n">01</div><div class="wc-name">Tilly's Life Center</div><div class="wc-type">Print · Event Design</div></div>
+      <div class="wc"><div class="wc-n">02</div><div class="wc-name">Etherwercs</div><div class="wc-type">Brand Identity · OOH</div></div>
+      <div class="wc"><div class="wc-n">03</div><div class="wc-name">Entrepreneur Mag</div><div class="wc-type">Editorial · Print</div></div>
+      <div class="wc"><div class="wc-n">04</div><div class="wc-name">Brighton</div><div class="wc-type">Identity · Retail</div></div>
+      <div class="wc"><div class="wc-n">05</div><div class="wc-name">Burger King</div><div class="wc-type">Large Format · Print</div></div>
+      <div class="wc"><div class="wc-n">06</div><div class="wc-name">Tilly's</div><div class="wc-type">Email · Retail</div></div>
+      <div class="wc"><div class="wc-n">07</div><div class="wc-name">Felina</div><div class="wc-type">Web · Brand Identity</div></div>
+      <div class="wc"><div class="wc-n">08</div><div class="wc-name">Toal Engineering</div><div class="wc-type">Identity · Collateral</div></div>
+      <div class="wc"><div class="wc-n">09</div><div class="wc-name">Ranch House Doors</div><div class="wc-type">Email · Brand</div></div>
+      <div class="wc"><div class="wc-n">10</div><div class="wc-name">Direct Edge</div><div class="wc-type">Finance · Brand</div></div>
     </div>
   </div>
 </section>
 
-<!-- ════════════════════════════════
-  SECTION 5 — PROCESS
-════════════════════════════════ -->
-<section class="process-section">
-  <div class="section-pink-header">
-    <div class="section-pink-header-title">The Process</div>
-    <div class="section-pink-header-sub">Four Steps — Zero Guesswork</div>
+<!-- ════════════════════
+  PROCESS
+════════════════════ -->
+<section class="section process-section">
+  <div class="section-pink-head">
+    <div class="sph-title">The Process</div>
+    <div class="sph-sub">Four Steps — Zero Guesswork</div>
   </div>
-  <div class="process-grid reveal">
-    <div class="process-card">
-      <div class="pc-n">01</div>
-      <div class="pc-label">Step One</div>
-      <div class="pc-title">Discovery</div>
-      <p class="pc-body">We start by understanding your goals, audience, and competitive position. Every project begins with a brief — not a guess.</p>
-    </div>
-    <div class="process-card">
-      <div class="pc-n">02</div>
-      <div class="pc-label">Step Two</div>
-      <div class="pc-title">Strategy</div>
-      <p class="pc-body">Visual direction, scope, and timeline locked in from the start. Clear expectations in both directions, so nothing surprises anyone.</p>
-    </div>
-    <div class="process-card">
-      <div class="pc-n">03</div>
-      <div class="pc-label">Step Three</div>
-      <div class="pc-title">Design</div>
-      <p class="pc-body">We iterate until every detail is locked and every element earns its place. No filler. Work that looks exactly like it should.</p>
-    </div>
-    <div class="process-card">
-      <div class="pc-n">04</div>
-      <div class="pc-label">Step Four</div>
-      <div class="pc-title">Delivery</div>
-      <p class="pc-body">Production-ready files, organized and packaged. Ready to launch, print, or publish — immediately, without a follow-up email.</p>
-    </div>
+  <div class="process-grid rv-up">
+    <div class="pc"><div class="pc-n">01</div><div class="pc-label">Step One</div><div class="pc-title">Discovery</div><p class="pc-body">We understand your goals, audience, and position. Every project begins with a brief — not a guess.</p></div>
+    <div class="pc"><div class="pc-n">02</div><div class="pc-label">Step Two</div><div class="pc-title">Strategy</div><p class="pc-body">Visual direction, scope, and timeline locked in from the start. Clear expectations, no surprises.</p></div>
+    <div class="pc"><div class="pc-n">03</div><div class="pc-label">Step Three</div><div class="pc-title">Design</div><p class="pc-body">We iterate until every element earns its place. No filler. Work that looks exactly like it should.</p></div>
+    <div class="pc"><div class="pc-n">04</div><div class="pc-label">Step Four</div><div class="pc-title">Delivery</div><p class="pc-body">Production-ready files, packaged and ready to launch, print, or publish — immediately.</p></div>
   </div>
 </section>
 
-<!-- ════════════════════════════════
-  SECTION 6 — CONTACT
-════════════════════════════════ -->
-<section class="contact-section" id="contact">
-  <!-- 3D bevel headline -->
+<!-- ════════════════════
+  CONTACT
+════════════════════ -->
+<section class="section contact-section" id="contact">
   <div class="contact-bevel-block">
     <div class="contact-bevel-inner">
       <div class="contact-bevel-type">Let's Build Something</div>
     </div>
   </div>
-
-  <!-- Pink subtitle band -->
-  <div class="pink-subtitle-band">
-    <div class="pink-subtitle-text">Start a Project with Quiet Contrast</div>
+  <div class="pink-sub-band">
+    <div class="pink-sub-text">Start a Project with Quiet Contrast</div>
   </div>
-
-  <div class="contact-inner">
-    <div class="contact-left reveal-l">
-      <div class="contact-eyebrow">Get in Touch</div>
-      <p class="contact-body">Send a brief and we'll respond within one business day. Based in Southern California, available locally, nationally, and for remote projects everywhere.</p>
-      <a href="mailto:justin@quietcontrast.com" class="contact-email-display">justin@quietcontrast.com</a>
-      <a href="mailto:justin@quietcontrast.com" class="btn-black">Book Now</a>
-    </div>
-    <div class="contact-right reveal-r">
-      <div class="contact-info-list">
-        <div class="contact-info-row">
-          <div class="ci-label">Studio</div>
-          <div class="ci-value">Quiet Contrast Design Agency</div>
-        </div>
-        <div class="contact-info-row">
-          <div class="ci-label">Location</div>
-          <div class="ci-value">Based in Southern California</div>
-        </div>
-        <div class="contact-info-row">
-          <div class="ci-label">Availability</div>
-          <div class="ci-value">Local, National &amp; Remote</div>
-        </div>
-        <div class="contact-info-row">
-          <div class="ci-label">Email</div>
-          <div class="ci-value"><a href="mailto:justin@quietcontrast.com">justin@quietcontrast.com</a></div>
-        </div>
-        <div class="contact-info-row">
-          <div class="ci-label">Response Time</div>
-          <div class="ci-value">Within 1 Business Day</div>
-        </div>
-        <div class="contact-info-row">
-          <div class="ci-label">Established</div>
-          <div class="ci-value">Est. 2009</div>
+  <div class="section-inner">
+    <div class="contact-grid rv-up">
+      <div class="contact-col">
+        <div class="ci-label" style="font-family:var(--display);font-size:10px;font-weight:700;letter-spacing:.24em;text-transform:uppercase;color:rgba(0,0,0,.35);margin-bottom:12px">Get in Touch</div>
+        <p class="about-body">Send a brief and we'll respond within one business day. Based in Southern California, available locally, nationally, and remotely.</p>
+        <br/>
+        <a href="mailto:justin@quietcontrast.com" class="contact-email">justin@quietcontrast.com</a>
+        <a href="mailto:justin@quietcontrast.com" class="btn-blk">Book Now</a>
+      </div>
+      <div class="contact-col contact-col-alt">
+        <div class="ci-list">
+          <div class="ci-row"><div class="ci-label">Studio</div><div class="ci-val">Quiet Contrast Design Agency</div></div>
+          <div class="ci-row"><div class="ci-label">Location</div><div class="ci-val">Based in Southern California</div></div>
+          <div class="ci-row"><div class="ci-label">Availability</div><div class="ci-val">Local, National &amp; Remote</div></div>
+          <div class="ci-row"><div class="ci-label">Email</div><div class="ci-val"><a href="mailto:justin@quietcontrast.com">justin@quietcontrast.com</a></div></div>
+          <div class="ci-row"><div class="ci-label">Response</div><div class="ci-val">Within 1 Business Day</div></div>
+          <div class="ci-row"><div class="ci-label">Established</div><div class="ci-val">Est. 2009</div></div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ════════════════════════════════
-  FOOTER POSTER BAR
-════════════════════════════════ -->
+<!-- ════════════════════
+  FOOTER
+════════════════════ -->
 <footer>
   <div class="footer-pink-band">
-    <div class="footer-pink-text">Quiet Contrast Design Studio — Southern California — Est. 2009</div>
+    <div class="fpb-text">Quiet Contrast Design Studio — Southern California — Est. 2009</div>
   </div>
-  <div class="footer-main">
+  <div class="footer-info">
     <div class="footer-cell">
-      <div class="fc-label">Email</div>
-      <div class="fc-value"><a href="mailto:justin@quietcontrast.com">justin@quietcontrast.com</a></div>
+      <div class="fc-lbl">Email</div>
+      <div class="fc-val"><a href="mailto:justin@quietcontrast.com">justin@quietcontrast.com</a></div>
     </div>
     <div class="footer-cell">
-      <div class="fc-label">Location</div>
-      <div class="fc-value">Southern California</div>
+      <div class="fc-lbl">Location</div>
+      <div class="fc-val">Southern California</div>
     </div>
     <div class="footer-cell">
-      <div class="fc-label">Book Now</div>
-      <div class="fc-value"><a href="mailto:justin@quietcontrast.com">Get a Quote</a></div>
+      <div class="fc-lbl">Start a Project</div>
+      <div class="fc-val"><a href="mailto:justin@quietcontrast.com">Get a Quote</a></div>
     </div>
     <div class="footer-cell">
-      <div class="fc-label">Connect</div>
-      <div class="fc-value"><a href="#">Instagram</a></div>
+      <div class="fc-lbl">Connect</div>
+      <div class="fc-val"><a href="#">Instagram</a></div>
     </div>
-    <div class="footer-logo-cell">
-      <div class="flc-main">QC</div>
-      <div class="flc-lines">
-        <div class="flc-line">Quiet</div>
-        <div class="flc-line">Contrast</div>
-      </div>
+    <div class="footer-logo-box">
+      <div class="flb-main">QC</div>
+      <div class="flb-sub">Quiet Contrast</div>
     </div>
   </div>
   <div class="footer-bottom">
     <div class="footer-copy">© Quiet Contrast 2026 · All Rights Reserved</div>
     <div class="footer-socials">
-      <a href="#" class="footer-social">Instagram</a>
-      <a href="#" class="footer-social">Behance</a>
-      <a href="#" class="footer-social">LinkedIn</a>
-      <a href="#" class="footer-social">Dribbble</a>
+      <a href="#" class="fsoc">Instagram</a>
+      <a href="#" class="fsoc">Behance</a>
+      <a href="#" class="fsoc">LinkedIn</a>
+      <a href="#" class="fsoc">Dribbble</a>
     </div>
   </div>
 </footer>
 
 <script>
-// Reveal on scroll
-const revEls = document.querySelectorAll('.reveal,.reveal-l,.reveal-r');
-const io = new IntersectionObserver(entries => {
-  entries.forEach(e => {
-    if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
-  });
-},{threshold:0.07});
-revEls.forEach(el => io.observe(el));
+// ── NAV: show after scrolling past 80% of viewport height ──
+// Uses scroll event (not IntersectionObserver) to avoid Safari reflow bug
+var nav = document.getElementById('siteNav');
+var threshold = Math.max(window.innerHeight * 0.7, 200);
+var ticking = false;
 
-// Stagger grids
-const grids = document.querySelectorAll('.work-grid,.process-grid,.about-stat-grid,.services-list');
-const gObs = new IntersectionObserver(entries => {
-  entries.forEach(e => {
-    if(e.isIntersecting){
-      Array.from(e.target.children).forEach((c,i) => {
-        c.style.opacity='0';
-        c.style.transform='translateY(16px)';
-        c.style.transition=`opacity .5s ease ${i*0.06}s, transform .5s ease ${i*0.06}s`;
-        requestAnimationFrame(() => { c.style.opacity='1'; c.style.transform='none'; });
+function onScroll() {
+  if (!ticking) {
+    requestAnimationFrame(function() {
+      if (window.scrollY > threshold) {
+        nav.classList.add('nav-show');
+      } else {
+        nav.classList.remove('nav-show');
+      }
+      ticking = false;
+    });
+    ticking = true;
+  }
+}
+window.addEventListener('scroll', onScroll, { passive: true });
+
+// ── MOBILE MENU ──
+var menuOpen = false;
+function toggleMenu() {
+  menuOpen = !menuOpen;
+  var m = document.getElementById('mobileMenu');
+  if (menuOpen) { m.style.display = 'flex'; requestAnimationFrame(function(){ m.classList.add('open'); }); }
+  else { m.classList.remove('open'); setTimeout(function(){ m.style.display = 'none'; }, 260); }
+}
+function closeMenu() {
+  menuOpen = false;
+  var m = document.getElementById('mobileMenu');
+  m.classList.remove('open');
+  setTimeout(function(){ m.style.display = 'none'; }, 260);
+}
+
+// ── REVEAL ON SCROLL (IntersectionObserver — read-only, no layout change) ──
+// Elements start opacity:0 only after DOM ready to avoid FOUC in Safari
+document.addEventListener('DOMContentLoaded', function() {
+  var els = document.querySelectorAll('.rv, .rv-up');
+  // Small delay ensures Safari has painted before we start observing
+  setTimeout(function() {
+    var io = new IntersectionObserver(function(entries) {
+      entries.forEach(function(e) {
+        if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
       });
-      gObs.unobserve(e.target);
-    }
-  });
-},{threshold:0.04});
-grids.forEach(g => gObs.observe(g));
+    }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+    els.forEach(function(el) { io.observe(el); });
+  }, 100);
+});
 
-// Show nav after scrolling past hero
-const nav = document.getElementById('siteNav');
-const hero = document.querySelector('.poster-hero');
-const heroObs = new IntersectionObserver(entries => {
-  entries.forEach(e => {
-    nav.classList.toggle('visible', !e.isIntersecting);
-  });
-},{threshold:0.1});
-heroObs.observe(hero);
+// ── STAGGER CHILDREN (work grid, process grid, services) ──
+document.addEventListener('DOMContentLoaded', function() {
+  var grids = document.querySelectorAll('.work-grid, .process-grid, .svc-list, .stat-row');
+  setTimeout(function() {
+    var gObs = new IntersectionObserver(function(entries) {
+      entries.forEach(function(e) {
+        if (e.isIntersecting) {
+          var kids = Array.from(e.target.children);
+          kids.forEach(function(c, i) {
+            c.style.opacity = '0';
+            setTimeout(function() {
+              c.style.transition = 'opacity .45s ease';
+              c.style.opacity = '1';
+            }, i * 55);
+          });
+          gObs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.05 });
+    grids.forEach(function(g) { gObs.observe(g); });
+  }, 120);
+});
 
-// Smooth anchor scroll
-document.querySelectorAll('a[href^="#"]').forEach(a => {
-  a.addEventListener('click', e => {
-    const t = document.querySelector(a.getAttribute('href'));
-    if(t){ e.preventDefault(); t.scrollIntoView({behavior:'smooth'}); }
+// ── SMOOTH SCROLL (manual, not CSS scroll-behavior to avoid Safari jump) ──
+document.querySelectorAll('a[href^="#"]').forEach(function(a) {
+  a.addEventListener('click', function(e) {
+    var id = a.getAttribute('href');
+    if (id === '#') return;
+    var target = document.querySelector(id);
+    if (!target) return;
+    e.preventDefault();
+    var top = target.getBoundingClientRect().top + window.scrollY - 52;
+    window.scrollTo({ top: top, behavior: 'smooth' });
   });
 });
 </script>
