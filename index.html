@@ -10,6 +10,16 @@
 <meta name="apple-mobile-web-app-title" content="QC"/>
 <meta name="theme-color" content="#f2b8c6"/>
 
+<!-- CRITICAL: Must run before any rendering to prevent Safari scroll-restore jump -->
+<script>
+// Disable browser scroll restoration so Safari doesn't jump to saved position
+if ('scrollRestoration' in history) {
+  history.scrollRestoration = 'manual';
+}
+// Force top immediately — runs synchronously before paint
+window.scrollTo(0, 0);
+</script>
+
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,700;0,800;0,900;1,700;1,800;1,900&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet"/>
@@ -1068,6 +1078,17 @@ document.querySelectorAll('a[href^="#"]').forEach(function(a) {
     var top = target.getBoundingClientRect().top + window.scrollY - 52;
     window.scrollTo({ top: top, behavior: 'smooth' });
   });
+});
+
+// ── FINAL SCROLL LOCK: force top on every load/reload ──
+// Runs after all JS — catches Safari's late scroll restoration
+window.scrollTo(0, 0);
+window.addEventListener('load', function() {
+  window.scrollTo(0, 0);
+});
+// Belt-and-suspenders: also catch pageshow (Safari back/forward cache)
+window.addEventListener('pageshow', function(e) {
+  window.scrollTo(0, 0);
 });
 </script>
 </body>
